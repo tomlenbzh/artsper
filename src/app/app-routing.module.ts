@@ -17,7 +17,7 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {
     scrollPositionRestoration: 'enabled',
     initialNavigation: 'enabled'
-  })],
+})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
