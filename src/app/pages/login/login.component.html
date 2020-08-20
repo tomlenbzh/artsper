@@ -1,2 +1,9 @@
-<p>login works!</p>
-<button mat-raised-button color="primary">Login</button>
+<h1 class="mb-50">LOGIN PAGE</h1>
+<button mat-raised-button color="primary" class="ml-5" (click)="login()">Login</button>
+<button mat-raised-button color="primary" class="ml-5" (click)="logout()">Logout</button>
+
+<div *ngIf="errorMessage" class="mt-50">
+  <div class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+</div>

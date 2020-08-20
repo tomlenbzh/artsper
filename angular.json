@@ -178,5 +178,8 @@
       }
     }
   },
-  "defaultProject": "artsper"
+  "defaultProject": "artsper",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
