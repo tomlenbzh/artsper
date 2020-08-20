@@ -28,14 +28,8 @@ export class AuthEffects {
     map((action: LogIn) => action.payload),
     switchMap((payload: AuthCredentials) => {
       return this.authService.logIn(payload).pipe(
-
-        map((user) => {
-          return new LogInSuccess({ token: user.token, email: payload.email });
-        }),
-        catchError((error) => {
-          return of(new LogInFailure({ error }));
-        })
-
+        map((user) => new LogInSuccess({ token: user.token, email: payload.email })),
+        catchError((error) => of(new LogInFailure({ error })))
       );
     })
   );

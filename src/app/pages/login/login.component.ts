@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
    * Logs the user in the application
    */
   public login(): void {
-    const payload: AuthCredentials = { email: 'superher@artsper-candidate.com', password: 'candidate' };
+    const payload: AuthCredentials = { email: 'superhero@artsper-candidate.com', password: 'candidate' };
     this.store.dispatch(new LogIn(payload));
   }
 
