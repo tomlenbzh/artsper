@@ -1,6 +1,33 @@
-<h1 class="mb-50">LOGIN PAGE</h1>
-<button mat-raised-button color="primary" class="ml-5" (click)="login()">Login</button>
-<button mat-raised-button color="primary" class="ml-5" (click)="logout()">Logout</button>
+<div class="container">
+
+  <mat-card class="login-card">
+    <h1 class="mb-50 txt-c">ARTSPER</h1>
+
+    <form class="mt-50" [formGroup]="loginForm">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button type="button" color="accent" class="login-btn" (click)="login()">
+        Login
+      </button>
+
+    </form>
+
+  </mat-card>
+
+</div>
 
 <div *ngIf="errorMessage" class="mt-50">
   <div class="alert alert-danger" role="alert">
@@ -11,5 +38,11 @@
 <div *ngIf="isAuthenticated" class="mt-50">
   <div class="alert alert-success" role="success">
     isAuthenticated? {{isAuthenticated}}
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="mt-50">
+  <div class="alert alert-success" role="success">
+    isLoading? {{isLoading}}
   </div>
 </div>

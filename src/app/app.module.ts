@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +14,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store/reducers';
 import { AuthEffects } from './store/effects/auth.effects';
+
+import { TokenInterceptor } from './tools/interceptors/token.interceptor';
+import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,15 @@ import { AuthEffects } from './store/effects/auth.effects';
     EffectsModule.forRoot([AuthEffects]),
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

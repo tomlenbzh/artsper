@@ -6,6 +6,8 @@ export enum AuthActionTypes {
   LOGIN_SUCCESS = '[Auth] Login Success',
   LOGIN_FAILURE = '[Auth] Login Failure',
   LOGOUT = '[AUTH] Logout',
+  LOADING_START = '[AUTH] LOADING Start',
+  LOADING_END = '[AUTH] LOADING End',
 }
 
 /**
@@ -37,6 +39,20 @@ export class LogInFailure implements Action {
  */
 export class LogOut implements Action {
   readonly type = AuthActionTypes.LOGOUT;
+}
+
+/**
+ * LoadingStart ACTION
+ */
+export class LoadingStart implements Action {
+  readonly type = AuthActionTypes.LOADING_START;
+}
+
+/**
+ * LoadingEnd ACTION
+ */
+export class LoadingEnd implements Action {
+  readonly type = AuthActionTypes.LOADING_END;
 }
 
 export type Actions =

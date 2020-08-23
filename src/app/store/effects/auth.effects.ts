@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError, tap, mergeMap, concatMap, exhaustMap } from 'rxjs/operators';
+import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 import { AuthenticationService } from '../../services/authentication.service';
@@ -37,7 +37,7 @@ export class AuthEffects {
   /**
    * LogInSuccess EFFECT
    * Stores TOKEN in localstorage
-   * Redirects to home
+   * Redirects to the catalogue page
    */
   @Effect({ dispatch: false })
   LogInSuccess: Observable<any> = this.actions$.pipe(
@@ -45,7 +45,7 @@ export class AuthEffects {
     tap((user) => {
       console.log('[LOGIN SUCCESS]', user);
       localStorage.setItem('accessToken', user.payload.token);
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/catalogue');
     })
   );
 
@@ -74,7 +74,33 @@ export class AuthEffects {
       tap(() => {
         console.log('[LOGOUT]');
         localStorage.removeItem('accessToken');
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/login');
       })
     );
+
+  /**
+   * LoadingStart EFFECT
+   * Stores TOKEN in localstorage
+   * Redirects to home
+   */
+  @Effect({ dispatch: false })
+  LoadingStart: Observable<any> = this.actions$.pipe(
+    ofType(AuthActionTypes.LOADING_START),
+    tap(() => {
+      console.log('[LOADING START]');
+    })
+  );
+
+  /**
+   * LoadingEnd EFFECT
+   * Stores TOKEN in localstorage
+   * Redirects to home
+   */
+  @Effect({ dispatch: false })
+  LoadingEnd: Observable<any> = this.actions$.pipe(
+    ofType(AuthActionTypes.LOADING_END),
+    tap(() => {
+      console.log('[LOADING END]');
+    })
+  );
 }
