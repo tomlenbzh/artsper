@@ -12,8 +12,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
 import { environment } from '../environments/environment';
-import { reducers, metaReducers } from './store/reducers';
+import { reducers, metaReducers } from './store/store';
+
 import { AuthEffects } from './store/effects/auth.effects';
+import { CatalogEffects } from './store/effects/catalog.effects';
 
 import { TokenInterceptor } from './tools/interceptors/token.interceptor';
 import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
@@ -29,8 +31,8 @@ import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
     MaterialModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AuthEffects]),
-    HttpClientModule
+    EffectsModule.forRoot([AuthEffects, CatalogEffects]),
+    HttpClientModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

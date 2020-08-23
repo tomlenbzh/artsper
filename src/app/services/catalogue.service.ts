@@ -9,7 +9,7 @@ export class CatalogueService {
 
   constructor(private http: HttpClient) { }
 
-  getCatalogue(): Observable<any> {
+  getCatalogue(filters: any): Observable<any> {
     return this.http.get<any>('https://www.artsper.com/api/artworks');
   }
 }

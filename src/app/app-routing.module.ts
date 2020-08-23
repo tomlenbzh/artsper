@@ -5,7 +5,7 @@ import { AuthenticationGuard } from './tools/guards/authentication.guard';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule),
   }, {
     path: 'catalogue',
     loadChildren: () => import('./pages/catalogue/catalogue.module').then(m => m.CatalogueModule),

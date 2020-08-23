@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { AppState, selectAuth } from '../../store/reducers/index';
+import { AppState, selectAuth } from '../../store/store';
 import { LogIn } from '../../store/actions/auth.actions';
 import { AuthCredentials, User } from '../../models/auth.model';
 
@@ -31,10 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.credentials = {
-      email: '',
-      password: ''
-    };
+    this.credentials = { email: '', password: '' };
     this.getAuthState.subscribe((state) => {
       this.user = state.user;
       this.isAuthenticated = state.isAuthenticated;

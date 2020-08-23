@@ -30,19 +30,5 @@
 </div>
 
 <div *ngIf="errorMessage" class="mt-50">
-  <div class="alert alert-danger" role="alert">
-    {{errorMessage}}
-  </div>
-</div>
-
-<div *ngIf="isAuthenticated" class="mt-50">
-  <div class="alert alert-success" role="success">
-    isAuthenticated? {{isAuthenticated}}
-  </div>
-</div>
-
-<div *ngIf="isLoading" class="mt-50">
-  <div class="alert alert-success" role="success">
-    isLoading? {{isLoading}}
-  </div>
+  <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
 </div>

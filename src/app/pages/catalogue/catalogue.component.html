@@ -1,3 +1,31 @@
-<p>catalogue works!</p>
+<div class="container">
 
-<button mat-raised-button color="primary" class="ml-5" (click)="logout()">Logout</button>
+  <p>catalogue works!</p>
+
+  <button mat-raised-button color="primary" class="ml-5" (click)="logout()">Logout</button>
+
+  <div *ngIf="artworksList !== null" class="row">
+    <div *ngFor=" let artwork of artworksList; let i=index" class="artwork">
+
+      <mat-card class="artwork-card">
+
+        <img [src]="artwork.images[0].absolute_path" class="artwork-img">
+
+        <div class="artwork-info mt-10">
+          <p class="artwork-txt">{{ artwork?.artwork_title }}</p>
+          <p class="artwork-txt">{{ artwork?.artist?.artist_firstname }} {{ artwork?.artist?.artist_lastname }}</p>
+          <p class="artwork-txt">{{ artwork?.category?.label.en || 'Misc' }}</p>
+          <p class="artwork-txt">
+            {{ artwork?.artwork_dimension_h }} x
+            {{ artwork?.artwork_dimension_l }} x
+            {{ artwork?.artwork_dimension_w }}
+          </p>
+          <p class="artwork-txt">{{ artwork?.artwork_price }} {{ artwork?.currency?.sign }}</p>
+        </div>
+
+      </mat-card>
+
+    </div>
+  </div>
+
+</div>
