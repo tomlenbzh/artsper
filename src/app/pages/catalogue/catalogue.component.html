@@ -1,30 +1,97 @@
 <div class="container">
 
-  <p>catalogue works!</p>
+  <div class="filters-container mt-20 mb-20">
 
-  <button mat-raised-button color="primary" class="ml-5" (click)="logout()">Logout</button>
+    <form [formGroup]="filtersForm" class="mt-20">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput formControlName="search" type="text">
+        <mat-icon matSuffix *ngIf="!filtersForm.controls.search.value">search</mat-icon>
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="filtersForm.controls.search.value"
+          (click)="cleanSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select formControlName="sort">
+          <mat-option (click)="cleanSort()">-- None --</mat-option>
+          <mat-option *ngFor="let sort of sortFilter" [value]="sort.id">
+            {{ sort.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>sort</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Price</mat-label>
+        <mat-select formControlName="price">
+          <mat-option (click)="cleanPrice()">-- None --</mat-option>
+          <mat-option *ngFor="let price of priceFilter" [value]="price.id">
+            {{ price.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>attach_money</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" multiple>
+          <mat-option (click)="cleanCategory()">-- None --</mat-option>
+          <mat-option *ngFor="let category of categoryFilter" [value]="category.id">
+            {{ category.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>category</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Items per page</mat-label>
+        <mat-select formControlName="ipp">
+          <mat-option (click)="cleanIpp()">-- None --</mat-option>
+          <mat-option *ngFor="let ipp of itemsPerPageFilter" [value]="ipp.id">
+            {{ ipp.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>list</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" multiple>
+          <mat-option (click)="cleanStatus()">-- None --</mat-option>
+          <mat-option *ngFor="let status of statusFilter" [value]="status.id">
+            {{ status.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>check</mat-icon>
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" multiple>
+          <mat-option (click)="cleanStatus()">-- None --</mat-option>
+          <mat-option *ngFor="let status of statusFilter" [value]="status.id">
+            {{ status.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>check</mat-icon>
+      </mat-form-field> -->
+
+      <br>
+
+      <button mat-raised-button type="button" color="primary" (click)="applyFilters()">Apply filters</button>
+      <button mat-raised-button type="button" color="accent" (click)="initAllFilters()">Re-init filters</button>
+      <button mat-raised-button type="button" (click)="logout()">Logout</button>
+
+    </form>
+  </div>
 
   <div *ngIf="artworksList !== null" class="row">
     <div *ngFor=" let artwork of artworksList; let i=index" class="artwork">
-
-      <mat-card class="artwork-card">
-
-        <img [src]="artwork.images[0].absolute_path" class="artwork-img">
-
-        <div class="artwork-info mt-10">
-          <p class="artwork-txt">{{ artwork?.artwork_title }}</p>
-          <p class="artwork-txt">{{ artwork?.artist?.artist_firstname }} {{ artwork?.artist?.artist_lastname }}</p>
-          <p class="artwork-txt">{{ artwork?.category?.label.en || 'Misc' }}</p>
-          <p class="artwork-txt">
-            {{ artwork?.artwork_dimension_h }} x
-            {{ artwork?.artwork_dimension_l }} x
-            {{ artwork?.artwork_dimension_w }}
-          </p>
-          <p class="artwork-txt">{{ artwork?.artwork_price }} {{ artwork?.currency?.sign }}</p>
-        </div>
-
-      </mat-card>
-
+      <app-artwork-card [artwork]="artwork"></app-artwork-card>
     </div>
   </div>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AppState, selectAuth } from '../../store/store';
 import { LogIn } from '../../store/actions/auth.actions';
@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
 
   getAuthState: Observable<any>;
+  authStateSubscription: Subscription;
+
   isLoading: boolean | null;
   isAuthenticated: boolean | null;
   user: User | null;
@@ -32,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.credentials = { email: '', password: '' };
-    this.getAuthState.subscribe((state) => {
+    this.authStateSubscription = this.getAuthState.subscribe((state) => {
       this.user = state.user;
       this.isAuthenticated = state.isAuthenticated;
       this.errorMessage = state.errorMessage;
@@ -40,14 +42,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.authStateSubscription.unsubscribe();
+  }
 
   /**
    * login()
    * Logs the user in the application
    */
   public login(): void {
-    // const payload: AuthCredentials = { email: 'superhero@artsper-candidate.com', password: 'candidate' };
     this.store.dispatch(new LogIn(this.loginForm.value));
   }
 
