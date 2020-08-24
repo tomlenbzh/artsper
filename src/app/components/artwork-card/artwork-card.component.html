@@ -1,5 +1,6 @@
 <mat-card class="artwork-card">
-  <img [src]="artwork?.images[0]?.absolute_path" class="artwork-img">
+  <img [defaultImage]="artwork?.images[0]?.absolute_path" [lazyLoad]="artwork?.images[0]?.absolute_path"
+    errorImage="https://cdn2.iconfinder.com/data/icons/outlined-set-1/29/no_camera-512.png" class="artwork-img">
   <div class="artwork-info mt-10">
     <p class="artwork-txt">{{ artwork?.artwork_title }}</p>
     <p class="artwork-txt">{{ artwork?.artist?.artist_firstname }} {{ artwork?.artist?.artist_lastname }}</p>

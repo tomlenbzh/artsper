@@ -17,6 +17,10 @@ import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilt
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
+  totalRecords: number;
+  currentPage: number;
+  pagesNumber: number;
+
   filtersForm = new FormGroup({
     search: new FormControl(),
     category: new FormControl(),
@@ -24,11 +28,13 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     price: new FormControl(),
     ipp: new FormControl(),
     status: new FormControl(),
+    page: new FormControl(),
   });
 
   getCatalogState: Observable<any>;
   catalogStateSubscription: Subscription;
   artworksList: any[] = null;
+  pagination: any;
 
   categoryFilter: CatalogFilter[] = CategoryFilter;
   priceFilter: CatalogFilter[] = PriceFilter;
@@ -38,14 +44,18 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<AppState>) {
     this.getCatalogState = this.store.select(selectCatalog);
+    this.currentPage = 1;
   }
 
   ngOnInit(): void {
     this.initAllFilters();
     this.catalogStateSubscription = this.getCatalogState.subscribe((state) => {
       if (state.artworksList !== null) {
-        this.artworksList = state.artworksList;
+        this.artworksList = state.artworksList.data;
+        this.pagination = state.artworksList.meta;
+        this.pagesNumber = this.pagination.total_items / this.pagination.current_items;
         console.log('[this.artworksList]', this.artworksList);
+        console.log('[this.pagination]', this.pagination);
       }
     });
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
@@ -80,6 +90,10 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     // this.filtersForm.controls.status.patchValue(this.statusFilter[1].id);
   }
 
+  private setFilterPage(page: number): void {
+    this.filtersForm.controls.page.patchValue(page);
+  }
+
   public initAllFilters(): void {
     this.cleanSearch();
     this.cleanSort();
@@ -87,6 +101,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.cleanCategory();
     this.cleanIpp();
     this.cleanStatus();
+    this.setFilterPage(this.currentPage);
   }
 
   /**
@@ -95,6 +110,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
    */
   public applyFilters(): void {
     console.log('Filters Form', this.filtersForm.value);
+    this.currentPage = 1;
+    this.setFilterPage(1);
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
   }
 
@@ -106,4 +123,10 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LogOut());
   }
 
+  public changePage($event: any) {
+    this.currentPage = $event;
+    this.setFilterPage(this.currentPage);
+    console.log('[CURRENT PAGE:]', this.currentPage);
+    this.store.dispatch(new FetchArtworks(this.filtersForm.value));
+  }
 }

@@ -11,6 +11,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store/store';
 
@@ -29,6 +31,7 @@ import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    LazyLoadImageModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AuthEffects, CatalogEffects]),

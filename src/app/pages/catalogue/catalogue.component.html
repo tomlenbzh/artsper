@@ -69,17 +69,6 @@
         <mat-icon matSuffix>check</mat-icon>
       </mat-form-field>
 
-      <!-- <mat-form-field appearance="fill">
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status" multiple>
-          <mat-option (click)="cleanStatus()">-- None --</mat-option>
-          <mat-option *ngFor="let status of statusFilter" [value]="status.id">
-            {{ status.label }}
-          </mat-option>
-        </mat-select>
-        <mat-icon matSuffix>check</mat-icon>
-      </mat-form-field> -->
-
       <br>
 
       <button mat-raised-button type="button" color="primary" (click)="applyFilters()">Apply filters</button>
@@ -89,10 +78,22 @@
     </form>
   </div>
 
-  <div *ngIf="artworksList !== null" class="row">
-    <div *ngFor=" let artwork of artworksList; let i=index" class="artwork">
-      <app-artwork-card [artwork]="artwork"></app-artwork-card>
+  <section *ngIf="artworksList !== null">
+
+    <div class="row">
+      <div
+        *ngFor=" let artwork of artworksList | paginate: { id: 'artworks-pagination', itemsPerPage: pagination.limit, currentPage: currentPage, totalItems: pagination.total_items }"
+        class="artwork">
+        <app-artwork-card [artwork]="artwork"></app-artwork-card>
+      </div>
     </div>
-  </div>
+
+    <div class="row">
+      <div class="paging-controls">
+        <pagination-controls id="artworks-pagination" (pageChange)="changePage($event)"></pagination-controls>
+      </div>
+    </div>
+
+  </section>
 
 </div>

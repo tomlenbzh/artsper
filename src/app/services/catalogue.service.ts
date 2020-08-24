@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +24,13 @@ export class CatalogueService {
       + `${this.setSortFilter(filters.sort)}`
       + `${this.setPriceFilter(filters.price)}`
       + `${this.setStatusFilters(filters.status)}`
-      + `&page=2`;
+      + `${this.setPageFilter(filters.page)}`;
 
     return baseUrl;
+  }
+
+  private setPageFilter(page: number): string {
+    return `&page=${page}`;
   }
 
   private setPriceFilter(price: string | null): string {

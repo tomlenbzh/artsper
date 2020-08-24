@@ -29,8 +29,9 @@ export class CatalogEffects {
     map((action: FetchArtworks) => action.payload),
     switchMap((payload: any) => {
       return this.catalogueService.getCatalogue(payload).pipe(
+        // tap((artworksList) => console.log('PAYLOAD', artworksList)),
         map((artworksList: ArtworkList) => {
-          return new FetchArtworksSuccess({ artworksList: artworksList.data });
+          return new FetchArtworksSuccess({ artworksList });
         }),
         catchError((error) => of(new FetchArtworksFailure({ error })))
       );
@@ -45,9 +46,9 @@ export class CatalogEffects {
   @Effect({ dispatch: false })
   FetchArtworksSuccess: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_SUCCESS),
-    tap((artworksList) => {
-      console.log('[FETCH ARTWORKS SUCCESS]', artworksList);
-    })
+    // tap((artworksList) => {
+    //   console.log('[FETCH ARTWORKS SUCCESS]', artworksList);
+    // })
   );
 
   /**
