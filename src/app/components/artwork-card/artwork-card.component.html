@@ -1,15 +1,21 @@
-<mat-card class="artwork-card">
+<mat-card class="artwork-card animate__animated animate__fadeIn">
+
+  <div class="coupon" *ngIf="artwork.promotion">
+    {{ promotion }}
+  </div>
+
   <img [defaultImage]="artwork?.images[0]?.absolute_path" [lazyLoad]="artwork?.images[0]?.absolute_path"
     errorImage="https://cdn2.iconfinder.com/data/icons/outlined-set-1/29/no_camera-512.png" class="artwork-img">
   <div class="artwork-info mt-10">
-    <p class="artwork-txt">{{ artwork?.artwork_title }}</p>
-    <p class="artwork-txt">{{ artwork?.artist?.artist_firstname }} {{ artwork?.artist?.artist_lastname }}</p>
-    <p class="artwork-txt">{{ artwork?.category?.label.en || 'Misc' }}</p>
-    <p class="artwork-txt">
-      {{ artwork?.artwork_dimension_h }} x
-      {{ artwork?.artwork_dimension_l }} x
-      {{ artwork?.artwork_dimension_w }}
-    </p>
-    <p class="artwork-txt">{{ artwork?.artwork_price }} {{ artwork?.currency?.sign }}</p>
+    <p class="artwork-txt">Title: {{ title }}</p>
+    <p class="artwork-txt">Artist: {{ artist }}</p>
+    <p class="artwork-txt">Category: {{ category }}</p>
+    <p class="artwork-txt">Dimensions: {{ dimensions }}</p>
+    <p class="artwork-txt">Price: {{ price }}</p>
+    <div class="actions">
+      <button mat-icon-button matTooltip="More information">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+    </div>
   </div>
 </mat-card>

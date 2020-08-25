@@ -5,6 +5,7 @@ import { MaterialModule } from '../material.module';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     CommonModule,
     MaterialModule,
     NgxPaginationModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    ScrollToModule.forRoot()
   ],
   exports: [
     ArtworkCardComponent

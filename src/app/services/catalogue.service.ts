@@ -11,12 +11,10 @@ export class CatalogueService {
 
   public getCatalogue(filters: any): Observable<any> {
     const url = this.buildUrl(filters);
-    console.log('MY URL:', url);
     return this.http.get<any>(url);
   }
 
   private buildUrl(filters: any): string {
-    console.log(`[filters]`, filters);
     const baseUrl = `https://www.artsper.com/api/artworks?`
       + `${this.setIppFilter(filters.ipp)}`
       + `${this.setCategoryFilters(filters.category)}`

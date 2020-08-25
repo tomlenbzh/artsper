@@ -37,19 +37,19 @@ export function authReducer(state: AuthState = initialAuthState, action: any): A
       };
     }
 
-    case AuthActionTypes.LOADING_START: {
-      return {
-        ...state,
-        isLoading: true
-      };
-    }
+    // case AuthActionTypes.LOADING_START: {
+    //   return {
+    //     ...state,
+    //     isLoading: true
+    //   };
+    // }
 
-    case AuthActionTypes.LOADING_END: {
-      return {
-        ...state,
-        isLoading: false
-      };
-    }
+    // case AuthActionTypes.LOADING_END: {
+    //   return {
+    //     ...state,
+    //     isLoading: false
+    //   };
+    // }
 
     case AuthActionTypes.LOGOUT: {
       return initialAuthState;

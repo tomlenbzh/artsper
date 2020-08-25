@@ -35,6 +35,8 @@
     "@ngrx/store": "^10.0.0",
     "@ngrx/store-devtools": "^10.0.0",
     "@nguniversal/express-engine": "^9.0.2",
+    "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
+    "body-scroll-lock": "^3.0.3",
     "bootstrap": "^4.5.2",
     "express": "^4.15.2",
     "jquery": "^3.5.1",

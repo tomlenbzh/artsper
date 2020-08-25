@@ -12,6 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store/store';
@@ -32,6 +33,7 @@ import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
     BrowserAnimationsModule,
     MaterialModule,
     LazyLoadImageModule,
+    ScrollToModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AuthEffects, CatalogEffects]),

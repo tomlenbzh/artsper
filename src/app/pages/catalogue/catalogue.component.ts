@@ -1,14 +1,24 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { MatOption } from '@angular/material/core';
 import { Observable, Subscription } from 'rxjs';
 
-import { AppState, selectCatalog } from '../../store/store';
+import {
+  AppState,
+  selectArtworksListData,
+  selectArtworksListMeta,
+  selectIsArtworksListLoading,
+  selectArtworksListError
+} from '../../store/store';
+
 import { LogOut } from '../../store/actions/auth.actions';
-import { FetchArtworks } from '../../store/actions/catalog.actions';
+import { FetchArtworks, LoadingStart } from '../../store/actions/catalog.actions';
 import { CatalogFilter } from '../../models/filters.model';
 import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilter } from '../../data/filters.data';
+import { PlatformService } from '../../services/platform.service';
+
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
 @Component({
   selector: 'app-catalogue',
@@ -16,6 +26,9 @@ import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilt
   styleUrls: ['./catalogue.component.scss']
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
+
+  private overlayElement = null;
+  private document: Document;
 
   totalRecords: number;
   currentPage: number;
@@ -31,9 +44,19 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     page: new FormControl(),
   });
 
-  getCatalogState: Observable<any>;
-  catalogStateSubscription: Subscription;
-  artworksList: any[] = null;
+  artworksList: Observable<any[]>;
+  isLoading: Observable<boolean | null>;
+  errorMessage: Observable<string | null>;
+  // myListSubscription: Subscription;
+
+  myMeta: Observable<any>;
+  myMetaSubscription: Subscription;
+  isLoadingSubscription: Subscription;
+
+  showLoader: boolean;
+
+  // getCatalogState: Observable<any>;
+
   pagination: any;
 
   categoryFilter: CatalogFilter[] = CategoryFilter;
@@ -42,31 +65,50 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   itemsPerPageFilter: CatalogFilter[] = ItemsPerPageFilter;
   statusFilter: CatalogFilter[] = StatusFilter;
 
-  constructor(private store: Store<AppState>) {
-    this.getCatalogState = this.store.select(selectCatalog);
+  constructor(
+    private store: Store<AppState>,
+    private platformService: PlatformService,
+    private scrollToService: ScrollToService
+  ) {
     this.currentPage = 1;
+    // this.getCatalogState = this.store.select(selectCatalog);
+    this.artworksList = this.store.select(selectArtworksListData);
+    this.myMeta = this.store.select(selectArtworksListMeta);
+    this.isLoading = this.store.select(selectIsArtworksListLoading);
+    this.errorMessage = this.store.select(selectArtworksListError);
   }
 
   ngOnInit(): void {
-    this.initAllFilters();
-    this.catalogStateSubscription = this.getCatalogState.subscribe((state) => {
-      if (state.artworksList !== null) {
-        this.artworksList = state.artworksList.data;
-        this.pagination = state.artworksList.meta;
-        this.pagesNumber = this.pagination.total_items / this.pagination.current_items;
-        console.log('[this.artworksList]', this.artworksList);
-        console.log('[this.pagination]', this.pagination);
-      }
-    });
-    this.store.dispatch(new FetchArtworks(this.filtersForm.value));
+
+    if (this.platformService.isPlatformBrowser) {
+      this.initAllFilters();
+      this.showLoader = false;
+      this.document = this.platformService.windowRefService.nativeWindow.document;
+      this.overlayElement = this.document.querySelector('#overlay');
+      // this.lockBody();
+      this.myMetaSubscription = this.myMeta.subscribe((meta: any) => {
+        if (meta) {
+          this.pagination = meta;
+          this.pagesNumber = this.pagination?.total_items / this.pagination?.current_items;
+        }
+      });
+      this.isLoadingSubscription = this.isLoading.subscribe((value: boolean) => {
+        this.showLoader = value;
+        value === true ? disableBodyScroll(this.overlayElement) : enableBodyScroll(this.overlayElement);
+      });
+      this.store.dispatch(new LoadingStart({}));
+      this.store.dispatch(new FetchArtworks(this.filtersForm.value));
+    }
   }
 
   ngOnDestroy(): void {
-    this.catalogStateSubscription.unsubscribe();
+    clearAllBodyScrollLocks();
+    // this.myListSubscription.unsubscribe();
+    this.myMetaSubscription.unsubscribe();
   }
 
   public cleanSort() {
-    this.filtersForm.controls.sort.patchValue(null);
+    this.filtersForm.controls.sort.patchValue(this.sortFilter[4].id);
   }
 
   public cleanSearch() {
@@ -86,8 +128,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   public cleanStatus() {
-    this.filtersForm.controls.status.patchValue(null);
-    // this.filtersForm.controls.status.patchValue(this.statusFilter[1].id);
+    this.filtersForm.controls.status.patchValue([this.statusFilter[1].id]);
   }
 
   private setFilterPage(page: number): void {
@@ -112,6 +153,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     console.log('Filters Form', this.filtersForm.value);
     this.currentPage = 1;
     this.setFilterPage(1);
+    this.store.dispatch(new LoadingStart({}));
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
   }
 
@@ -127,6 +169,13 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.currentPage = $event;
     this.setFilterPage(this.currentPage);
     console.log('[CURRENT PAGE:]', this.currentPage);
+    this.store.dispatch(new LoadingStart({}));
+    this.scrollTo('#top');
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
+  }
+
+  private scrollTo(target: string): void {
+    const config: ScrollToConfigOptions = { target, duration: 1500, offset: -100 };
+    this.scrollToService.scrollTo(config);
   }
 }
