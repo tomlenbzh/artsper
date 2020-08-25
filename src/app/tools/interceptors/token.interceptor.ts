@@ -2,6 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
+import { User } from 'src/app/models/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,10 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this.authService = this.injector.get(AuthenticationService);
-    const token: string = this.authService.getAccessToken();
+    // const token: string = this.authService.getAccessToken();
+    const userProfile: User = JSON.parse(this.authService.getAccessToken());
+
+    console.log('INTERCEPT TOKEN', userProfile?.token);
 
     if (this.checkExcludedUrl(request.url) === true) {
       request = request.clone({
@@ -35,7 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
     } else {
       request = request.clone({
         setHeaders: {
-          'x-token': token,
+          'x-token': userProfile?.token,
           'Content-Type': 'application/json',
           Authorization: 'Basic YXJ0c3BlcjpoVGsxZEE3ZmVBdDI='
         }

@@ -32,14 +32,14 @@ export function catalogReducer(state: CatalogState = initialAuthState, action: a
       };
     }
 
-    case CatalogActionTypes.LOADING_START: {
+    case CatalogActionTypes.LOADING_ARTWORKS_START: {
       return {
         ...state,
         isLoading: true
       };
     }
 
-    case CatalogActionTypes.LOADING_END: {
+    case CatalogActionTypes.LOADING_ARTWORKS_END: {
       return {
         ...state,
         isLoading: false

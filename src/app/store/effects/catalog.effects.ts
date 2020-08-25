@@ -5,7 +5,13 @@ import { map, switchMap, catchError, tap, mapTo } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 import { CatalogueService } from '../../services/catalogue.service';
-import { CatalogActionTypes, FetchArtworks, FetchArtworksSuccess, FetchArtworksFailure, LoadingEnd } from '../actions/catalog.actions';
+import {
+  CatalogActionTypes,
+  FetchArtworks,
+  FetchArtworksSuccess,
+  FetchArtworksFailure,
+  LoadingArtworksEnd
+} from '../actions/catalog.actions';
 import { ArtworkList } from '../../models/catalog.model';
 
 @Injectable()
@@ -43,7 +49,7 @@ export class CatalogEffects {
   FetchArtworksSuccess: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_SUCCESS),
     tap((artworksList) => console.log('[FETCH ARTWORKS SUCCESS]', artworksList)),
-    mapTo(new LoadingEnd({}))
+    mapTo(new LoadingArtworksEnd({}))
   );
 
   /**
@@ -54,15 +60,15 @@ export class CatalogEffects {
   FetchArtworksFailure: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_FAILURE),
     tap((error) => console.log('[FETCH ARTWORKS ERROR]', error)),
-    mapTo(new LoadingEnd({}))
+    mapTo(new LoadingArtworksEnd({}))
   );
 
   /**
    * LoadingStart EFFECT
    */
   @Effect({ dispatch: false })
-  LoadingStart: Observable<any> = this.actions$.pipe(
-    ofType(CatalogActionTypes.LOADING_START),
+  LoadingArtworksStart: Observable<any> = this.actions$.pipe(
+    ofType(CatalogActionTypes.LOADING_ARTWORKS_START),
     tap((error) => {
       console.log('[LOADING START]', error);
     })
@@ -72,8 +78,8 @@ export class CatalogEffects {
    * LoadingEnd EFFECT
    */
   @Effect({ dispatch: false })
-  LoadingEnd: Observable<any> = this.actions$.pipe(
-    ofType(CatalogActionTypes.LOADING_END),
+  LoadingArtworksEnd: Observable<any> = this.actions$.pipe(
+    ofType(CatalogActionTypes.LOADING_ARTWORKS_END),
     tap((error) => {
       console.log('[LOADING END]', error);
     })

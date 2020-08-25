@@ -5,8 +5,8 @@ export enum CatalogActionTypes {
   FETCH_ARTWORKS = '[CATALOG] Fetch artworks',
   FETCH_ARTWORKS_SUCCESS = '[CATALOG] Fetch artworks success',
   FETCH_ARTWORKS_FAILURE = '[CATALOG] Fetch artworks error',
-  LOADING_START = '[CATALOG] LOADING Start',
-  LOADING_END = '[CATALOG] LOADING End',
+  LOADING_ARTWORKS_START = '[CATALOG] LOADING Start',
+  LOADING_ARTWORKS_END = '[CATALOG] LOADING End',
 }
 
 /**
@@ -36,15 +36,22 @@ export class FetchArtworksFailure implements Action {
 /**
  * LoadingStart ACTION
  */
-export class LoadingStart implements Action {
-  readonly type = CatalogActionTypes.LOADING_START;
+export class LoadingArtworksStart implements Action {
+  readonly type = CatalogActionTypes.LOADING_ARTWORKS_START;
   constructor(readonly payload: any) { }
 }
 
 /**
  * LoadingEnd ACTION
  */
-export class LoadingEnd implements Action {
-  readonly type = CatalogActionTypes.LOADING_END;
+export class LoadingArtworksEnd implements Action {
+  readonly type = CatalogActionTypes.LOADING_ARTWORKS_END;
   constructor(readonly payload: any) { }
 }
+
+export type CatalogActions =
+  FetchArtworks |
+  FetchArtworksSuccess |
+  FetchArtworksFailure |
+  LoadingArtworksStart |
+  LoadingArtworksEnd;

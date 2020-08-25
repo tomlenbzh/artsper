@@ -12,7 +12,7 @@ import {
 } from '../../store/store';
 
 import { LogOut } from '../../store/actions/auth.actions';
-import { FetchArtworks, LoadingStart } from '../../store/actions/catalog.actions';
+import { FetchArtworks, LoadingArtworksStart } from '../../store/actions/catalog.actions';
 import { CatalogFilter } from '../../models/filters.model';
 import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilter } from '../../data/filters.data';
 import { PlatformService } from '../../services/platform.service';
@@ -96,7 +96,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.showLoader = value;
         value === true ? disableBodyScroll(this.overlayElement) : enableBodyScroll(this.overlayElement);
       });
-      this.store.dispatch(new LoadingStart({}));
+      this.store.dispatch(new LoadingArtworksStart({}));
       this.store.dispatch(new FetchArtworks(this.filtersForm.value));
     }
   }
@@ -153,7 +153,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     console.log('Filters Form', this.filtersForm.value);
     this.currentPage = 1;
     this.setFilterPage(1);
-    this.store.dispatch(new LoadingStart({}));
+    this.store.dispatch(new LoadingArtworksStart({}));
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
   }
 
@@ -169,7 +169,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.currentPage = $event;
     this.setFilterPage(this.currentPage);
     console.log('[CURRENT PAGE:]', this.currentPage);
-    this.store.dispatch(new LoadingStart({}));
+    this.store.dispatch(new LoadingArtworksStart({}));
     this.scrollTo('#top');
     this.store.dispatch(new FetchArtworks(this.filtersForm.value));
   }

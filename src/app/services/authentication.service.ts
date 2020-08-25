@@ -18,7 +18,7 @@ export class AuthenticationService {
    * Retrieves token from localstorage
    */
   public getAccessToken(): string {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem('userProfile');
   }
 
   /**

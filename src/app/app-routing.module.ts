@@ -6,6 +6,7 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule),
+    canActivate: [AuthenticationGuard]
   }, {
     path: 'catalogue',
     loadChildren: () => import('./pages/catalogue/catalogue.module').then(m => m.CatalogueModule),

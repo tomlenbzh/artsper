@@ -7,6 +7,7 @@ import { of, Observable } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
 import { AuthCredentials } from '../../models/auth.model';
 import { LogIn, AuthActionTypes, LogInSuccess, LogInFailure } from '../actions/auth.actions';
+import { stringify } from 'querystring';
 
 @Injectable()
 export class AuthEffects {
@@ -43,8 +44,8 @@ export class AuthEffects {
   LogInSuccess: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
-      console.log('[LOGIN SUCCESS]', user);
-      localStorage.setItem('accessToken', user.payload.token);
+      console.log('[LOGIN SUCCESS]', user.payload);
+      localStorage.setItem('userProfile', JSON.stringify(user.payload));
       this.router.navigateByUrl('/catalogue');
     })
   );
@@ -73,7 +74,7 @@ export class AuthEffects {
       ofType(AuthActionTypes.LOGOUT),
       tap(() => {
         console.log('[LOGOUT]');
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userProfile');
         this.router.navigateByUrl('/login');
       })
     );
@@ -101,6 +102,19 @@ export class AuthEffects {
     ofType(AuthActionTypes.LOADING_END),
     tap(() => {
       console.log('[LOADING END]');
+    })
+  );
+
+  /**
+   * LogBackIn EFFECT
+   * Logs user back in the app
+   */
+  @Effect({ dispatch: false })
+  LogBackIn: Observable<any> = this.actions$.pipe(
+    ofType(AuthActionTypes.LOG_BACK_IN),
+    tap(() => {
+      console.log('[LOG BACK IN]');
+      // this.router.navigateByUrl('/catalogue');
     })
   );
 }

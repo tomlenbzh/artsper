@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((response: any) => {
         if (response instanceof HttpErrorResponse && response.status === 401) {
           console.log('[HttpErrorResponse]', response);
-          localStorage.removeItem('accessToken');
+          localStorage.removeItem('userProfile');
           this.router.navigateByUrl('/login');
         }
         return throwError(new Error(response));

@@ -55,6 +55,18 @@ export function authReducer(state: AuthState = initialAuthState, action: any): A
       return initialAuthState;
     }
 
+    case AuthActionTypes.LOG_BACK_IN: {
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: {
+          token: action.payload.token,
+          email: action.payload.email
+        },
+        errorMessage: null
+      };
+    }
+
     default: {
       return state;
     }

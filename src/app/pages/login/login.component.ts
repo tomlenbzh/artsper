@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import { AppState, selectAuth } from '../../store/store';
-import { LogIn } from '../../store/actions/auth.actions';
+import { LogIn, LogBackIn } from '../../store/actions/auth.actions';
 import { AuthCredentials, User } from '../../models/auth.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -28,11 +29,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: string | null;
   credentials: AuthCredentials;
 
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private store: Store<AppState>,
+    private authService: AuthenticationService,
+  ) {
     this.getAuthState = this.store.select(selectAuth);
   }
 
   ngOnInit(): void {
+    this.isAlreadyLogguedIn();
     this.credentials = { email: '', password: '' };
     this.authStateSubscription = this.getAuthState.subscribe((state) => {
       this.user = state.user;
@@ -54,4 +59,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LogIn(this.loginForm.value));
   }
 
+  /**
+   * isAlreadyLogguedIn()
+   * Checks if there is already a profile in the localstorage
+   */
+  private isAlreadyLogguedIn(): void {
+    const userProfile = this.authService.getAccessToken();
+    if (this.authService.getAccessToken()) {
+      this.store.dispatch(new LogBackIn({ userProfile }));
+    }
+  }
 }
