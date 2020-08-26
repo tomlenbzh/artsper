@@ -16,19 +16,20 @@ export class CatalogueService {
 
   private buildUrl(filters: any): string {
     const baseUrl = `https://www.artsper.com/api/artworks?`
+      + `${this.setPageFilter(filters.page)}`
       + `${this.setIppFilter(filters.ipp)}`
       + `${this.setCategoryFilters(filters.category)}`
       + `${this.setSearchFilter(filters.search)}`
       + `${this.setSortFilter(filters.sort)}`
       + `${this.setPriceFilter(filters.price)}`
-      + `${this.setStatusFilters(filters.status)}`
-      + `${this.setPageFilter(filters.page)}`;
+      + `${this.setStatusFilters(filters.status)}`;
+    console.log('baseUrl', baseUrl);
 
     return baseUrl;
   }
 
   private setPageFilter(page: number): string {
-    return (page === null) ? '' : `&page=${page}`;
+    return (page === null) ? '' : `page=${page}`;
   }
 
   private setPriceFilter(price: string | null): string {

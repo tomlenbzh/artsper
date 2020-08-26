@@ -1,11 +1,11 @@
 <div class="app-header">
   <div class="header">
-    <img src="https://blog.artsper.com/wp-content/uploads/2018/06/Logo_Black.png" height="50px">
-    <!-- <button mat-button type="button" [matMenuTriggerFor]="menu">{{ userEmail | async }}</button> -->
-    <button mat-button type="button" [matMenuTriggerFor]="menu">MENU</button>
+    <img [src]="artsperLogo" class="artsper-logo">
+    <button mat-button type="button" [matMenuTriggerFor]="menu">{{ userEmail$ | async }}</button>
   </div>
-
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="logout()">Log out</button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>subdirectory_arrow_left</mat-icon>Log out
+    </button>
   </mat-menu>
 </div>

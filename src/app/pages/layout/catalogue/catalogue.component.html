@@ -10,10 +10,7 @@
     </div>
 
     <section class="mt-20 txt-r" *ngIf="pagination">
-      <div class="items-found">
-        <span class="items-nbr">{{ pagination?.total_items }}</span>
-        <span class="items-nbr-label">items found</span>
-      </div>
+      <app-items-found [itemsFound]="pagination?.total_items"></app-items-found>
     </section>
 
     <section *ngIf="pagination" class="mb-50">

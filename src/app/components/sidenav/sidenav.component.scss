@@ -10,3 +10,42 @@ form > * {
   background: linear-gradient(133deg, rgba(96, 125, 139, 1) 0%, rgba(57, 80, 92, 1) 42%, rgba(25, 39, 46, 1) 100%);
   color: white;
 }
+
+// input outline color
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #39505c !important;
+}
+
+// mat-input focused color
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #39505c !important;
+}
+
+// mat-input error outline color
+::ng-deep
+  .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
+  .mat-form-field-outline-thick {
+  color: red !important;
+  opacity: 0.8 !important;
+}
+
+// mat-input carent color
+::ng-deep .mat-input-element {
+  caret-color: #39505c !important;
+}
+
+// mat-label normal state style
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+  // color: $mainColor!important;
+}
+
+// mat-label focused style
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #39505c !important;
+}
+
+// mat-label error style
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: red !important;
+}

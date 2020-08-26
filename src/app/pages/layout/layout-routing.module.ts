@@ -13,12 +13,7 @@ const routes: Routes = [
         loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
         canActivate: [AuthenticationGuard]
       },
-      // {
-      //   path: 'page-not-found',
-      //   loadChildren: () => import('./pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
-      // },
       { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
-      { path: '**', redirectTo: 'page-not-found' }
     ]
   }
 ];

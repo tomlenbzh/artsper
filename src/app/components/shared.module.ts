@@ -6,17 +6,20 @@ import { MaterialModule } from '../material.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ArtworksListComponent } from './artworks-list/artworks-list.component';
+import { DiscountComponent } from './discount/discount.component';
+import { ItemsFoundComponent } from './items-found/items-found.component';
 
 @NgModule({
   declarations: [
     ArtworkCardComponent,
     HeaderComponent,
     SidenavComponent,
-    ArtworksListComponent
+    DiscountComponent,
+    ItemsFoundComponent
   ],
   imports: [
     CommonModule,
@@ -31,13 +34,15 @@ import { ArtworksListComponent } from './artworks-list/artworks-list.component';
     ArtworkCardComponent,
     HeaderComponent,
     SidenavComponent,
-    ArtworksListComponent
+    DiscountComponent,
+    ItemsFoundComponent
   ],
   entryComponents: [
     ArtworkCardComponent,
     HeaderComponent,
     SidenavComponent,
-    ArtworksListComponent
+    DiscountComponent,
+    ItemsFoundComponent
   ]
 })
 export class SharedModule { }

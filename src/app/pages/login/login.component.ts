@@ -21,6 +21,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: new FormControl('', [Validators.required]),
   });
 
+  public loginBackground = `https://www.wallpapertip.com/wmimgs/77-774852_leonid-afremov-late-stroll.jpg`;
+  public artsperLogo = `https://blog.artsper.com/wp-content/uploads/2018/06/Logo_Black.png`;
+
+
   get email() { return this.loginForm.get('email'); }
 
   get password() { return this.loginForm.get('password'); }

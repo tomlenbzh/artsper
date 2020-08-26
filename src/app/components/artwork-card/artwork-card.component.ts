@@ -7,13 +7,15 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ArtworkCardComponent implements OnInit {
 
-  @Input() artwork: any | null;
-  title: string;
-  artist: string;
-  category: string;
-  dimensions: string;
-  price: string;
-  promotion: string;
+  @Input() public artwork: any | null;
+  public errorImg: string;
+  public artworkImg: string;
+  public title: string;
+  public artist: string;
+  public category: string;
+  public dimensions: string;
+  public price: string;
+  public promotion: string;
 
   constructor() { }
 
@@ -22,6 +24,8 @@ export class ArtworkCardComponent implements OnInit {
   }
 
   private initArtwork(): void {
+    this.artworkImg = this.artwork?.images[0]?.absolute_path;
+    this.errorImg = `https://cdn2.iconfinder.com/data/icons/outlined-set-1/29/no_camera-512.png`;
     this.title = this.artwork?.artwork_title || '???';
     this.artist = this.getArtistName();
     this.category = this.artwork?.category?.label.en || '???';

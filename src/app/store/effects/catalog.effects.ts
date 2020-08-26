@@ -4,6 +4,9 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError, tap, mapTo } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
+
 import { CatalogueService } from '../../services/catalogue.service';
 import {
   CatalogActionTypes,
@@ -13,14 +16,17 @@ import {
   LoadingArtworksEnd
 } from '../actions/catalog.actions';
 import { ArtworkList } from '../../models/catalog.model';
+import { CustomSnackbarService } from '../../services/custom-snackbar.service';
 
 @Injectable()
 export class CatalogEffects {
 
   constructor(
     private actions$: Actions,
+    private store: Store<AppState>,
     private catalogueService: CatalogueService,
-    private router: Router
+    private router: Router,
+    private snack: CustomSnackbarService,
   ) { }
 
   /**
@@ -35,7 +41,12 @@ export class CatalogEffects {
     switchMap((payload: any) => {
       return this.catalogueService.getCatalogue(payload).pipe(
         map((artworksList: ArtworkList) => new FetchArtworksSuccess({ artworksList })),
-        catchError((error) => of(new FetchArtworksFailure({ error })))
+        catchError((error) => {
+          setTimeout(() => {
+            this.snack.open(`An error occurred while fetching the artworks`, null, 2000, 'login-failure-snackbar');
+          }, 500);
+          return of(new FetchArtworksFailure({ error }));
+        })
       );
     })
   );
@@ -60,7 +71,7 @@ export class CatalogEffects {
   FetchArtworksFailure: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_FAILURE),
     tap((error) => console.log('[FETCH ARTWORKS ERROR]', error)),
-    mapTo(new LoadingArtworksEnd({}))
+    mapTo(new LoadingArtworksEnd({})),
   );
 
   /**

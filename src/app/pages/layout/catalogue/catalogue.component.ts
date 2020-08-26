@@ -114,7 +114,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     clearAllBodyScrollLocks();
     this.artworksMetaSubscription$.unsubscribe();
     this.isLoadingSubscription$.unsubscribe();
-    this.userEmailSubscription$.unsubscribe();
     this.filtersSubscription$.unsubscribe();
   }
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { AppState, selectAuth } from '../../store/store';
-import { LogOut } from 'src/app/store/actions/auth.actions';
+import { Observable, } from 'rxjs';
+import { AppState, selectAuthEmail } from '../../store/store';
+import { LogOut } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,12 @@ import { LogOut } from 'src/app/store/actions/auth.actions';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private store: Store<AppState>) { }
+  public userEmail$: Observable<any>;
+  public artsperLogo = `https://blog.artsper.com/wp-content/uploads/2018/06/Logo_Black.png`;
+
+  constructor(private store: Store<AppState>) {
+    this.userEmail$ = this.store.select(selectAuthEmail);
+  }
 
   ngOnInit(): void { }
 

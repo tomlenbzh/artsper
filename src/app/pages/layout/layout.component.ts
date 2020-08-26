@@ -36,11 +36,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     if (this.platformService.isPlatformBrowser) {
 
+      this.isAuthenticatedSubscription$ = this.isAuthenticated$.subscribe((isAuth: boolean) => {
+        this.isAlreadyLogguedIn(isAuth);
+      });
+
       this.sidenavSubscription$ = this.toggleSidenav$.subscribe((isOpen: boolean) => {
         if (isOpen !== undefined) {
           this.isOpen = isOpen;
-          // this.toggleSidenavStatus();
-          console.log(`SUBSCRIPTION isOpen='${this.isOpen}'`);
         }
       });
 
@@ -50,24 +52,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
         if (e.matches) {
           if (this.mode === 'side') {
             this.mode = 'over';
-            console.log(`SMALL : side > over - mode='${this.mode}'`);
             this.store.dispatch(new CloseSidenav({}));
           }
         } else {
           if (this.mode === 'over') {
             this.mode = 'side';
-            console.log(`SMALL : over > side - mode='${this.mode}'`);
             this.store.dispatch(new OpenSidenav({}));
           } else if (this.mode === 'side') {
             this.mode = 'over';
-            console.log(`SMALL : side > over - mode='${this.mode}'`);
             this.store.dispatch(new OpenSidenav({}));
           }
         }
-      });
-
-      this.isAuthenticatedSubscription$ = this.isAuthenticated$.subscribe((isAuth: boolean) => {
-        this.isAlreadyLogguedIn(isAuth);
       });
     }
   }
@@ -75,17 +70,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public toggleSidenavStatus(): void {
     if (this.isOpen === true) {
       this.store.dispatch(new CloseSidenav({}));
-      console.log('TOGGLE CLOSE', this.isOpen);
     } else if (this.isOpen === false) {
       this.store.dispatch(new OpenSidenav({}));
-      console.log('TOGGLE OPEN', this.isOpen);
     }
   }
 
   onClose(): void {
-    console.log(`CLOSING: mode: ${this.mode}`);
     this.store.dispatch(new CloseSidenav({}));
-    // this.toggleSidenavStatus();
   }
 
   ngOnDestroy(): void {
@@ -99,7 +90,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
    */
   private isAlreadyLogguedIn(isAuth: boolean): void {
     const userProfile = JSON.parse(this.authService.getAccessToken());
-    console.log('userProfile', userProfile);
     if (this.authService.getAccessToken() && !isAuth) {
       this.store.dispatch(new LogBackIn(userProfile));
     }

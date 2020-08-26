@@ -2,13 +2,13 @@
 
   <form class="mt-20" [formGroup]="filtersForm">
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Search</mat-label>
       <input matInput type="text" formControlName="search">
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Sort</mat-label>
       <mat-select formControlName="sort">
         <mat-option *ngFor="let sort of sortFilter" [value]="sort.id">
@@ -18,7 +18,7 @@
       <mat-icon matSuffix>sort</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Price</mat-label>
       <mat-select formControlName="price">
         <mat-option *ngFor="let price of priceFilter" [value]="price.id">
@@ -28,7 +28,7 @@
       <mat-icon matSuffix>attach_money</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Category</mat-label>
       <mat-select formControlName="category" multiple>
         <mat-option *ngFor="let category of categoryFilter" [value]="category.id">
@@ -38,7 +38,7 @@
       <mat-icon matSuffix>category</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Items per page</mat-label>
       <mat-select formControlName="ipp">
         <mat-option *ngFor="let ipp of itemsPerPageFilter" [value]="ipp.id">
@@ -48,7 +48,7 @@
       <mat-icon matSuffix>list</mat-icon>
     </mat-form-field>
 
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status" multiple>
         <mat-option *ngFor="let status of statusFilter" [value]="status.id">

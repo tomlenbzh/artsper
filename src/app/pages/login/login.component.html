@@ -1,49 +1,57 @@
-<div class="container">
+<div class="login-full-height-container" [defaultImage]="loginBackground" [lazyLoad]="loginBackground">
+  <div class="container">
+    <div class="bg-content">
+      <div class="bg-content-middle animate__animated animate__fadeIn">
 
-  <mat-card class="login-card">
-    <h1 class="mb-50 txt-c">ARTSPER</h1>
+        <mat-card class="login-card">
+          <img [defaultImage]="artsperLogo" [lazyLoad]="artsperLogo" alt="Artsper" class="login-card-logo">
 
-    <form class="mt-50" [formGroup]="loginForm">
+          <div class="login-info">
+            To log in Artsper's website, please provide your <strong>email</strong> and <strong>password</strong>
+          </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email">
-        <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
-          Please enter a valid email address
-        </mat-error>
-        <mat-error *ngIf="email.hasError('required')">
-          Email is <strong>required</strong>
-        </mat-error>
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
+          <form [formGroup]="loginForm" class="login-form">
 
-      <br>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-error *ngIf="email.hasError('email') && !email.hasError('required')">
+                Please enter a valid email address
+              </mat-error>
+              <mat-error *ngIf="email.hasError('required')">
+                Email is <strong>required</strong>
+              </mat-error>
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password">
-        <mat-error *ngIf="password.hasError('required')">
-          Password is <strong>required</strong>
-        </mat-error>
-        <mat-icon matSuffix>lock</mat-icon>
-      </mat-form-field>
+            <br>
 
-      <br>
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password">
+              <mat-error *ngIf="password.hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+              <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
 
-      <div class="submit-container txt-c">
-        <button mat-raised-button type="submit" color="accent" class="login-btn" *ngIf="!isLoading"
-          [disabled]="!loginForm.valid" (click)="login()">
-          Login
-        </button>
+            <br>
 
-        <div style="width: 100%; margin: auto;" *ngIf="isLoading === true">
-          <mat-spinner color="warn" diameter="50"></mat-spinner>
-        </div>
+            <div class="submit-container txt-c">
+              <button mat-raised-button type="submit" class="login-btn" *ngIf="!isLoading" [disabled]="!loginForm.valid"
+                (click)="login()">
+                Login
+              </button>
+
+              <div class="loader-container" *ngIf="isLoading === true">
+                <mat-spinner color="warn" diameter="50"></mat-spinner>
+              </div>
+            </div>
+
+          </form>
+        </mat-card>
 
       </div>
-
-    </form>
-
-  </mat-card>
-
+    </div>
+  </div>
 </div>

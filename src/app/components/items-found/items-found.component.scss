@@ -1,0 +1,21 @@
+.items-found {
+  display: flex;
+  flex-direction: row;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  align-items: baseline;
+  padding: 10px 0;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.items-nbr {
+  margin-right: 5px;
+  font-size: x-large;
+  font-weight: bold;
+  color: #2b3e48;
+}
+
+.items-label {
+  font-size: medium;
+}
