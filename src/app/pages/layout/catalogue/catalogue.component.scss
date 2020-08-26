@@ -50,6 +50,11 @@
   font-size: large;
 }
 
+:host ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #39505c !important;
+}
+
 @media screen and (max-width: 1199px) {
   .artwork {
     width: 33.33%;
