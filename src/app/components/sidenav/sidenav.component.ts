@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { AppState, selectSidenav, selectArtworksFilters, selectIsArtworksListLoading } from '../../store/store';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { CatalogFilter } from '../../models/filters.model';
 import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilter, initalFilters } from '../../data/filters.data';
 import { ArtworksFilters } from '../../models/catalog.model';
 import { ApplyFilters } from '../../store/actions/catalog.actions';
+import { MediaMatcher, BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-sidenav',
@@ -22,6 +23,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
   public isLoadingSubscription$: Subscription;
 
   public toggleSidnav: Observable<boolean>;
+  public toggleSidnavSubscription$: Subscription;
+
   public mode = 'side';
   public isLoading = false;
 
@@ -35,14 +38,20 @@ export class SidenavComponent implements OnInit, OnDestroy {
     page: new FormControl(),
   });
 
+  openside = false;
+
   categoryFilter: CatalogFilter[] = CategoryFilter;
   priceFilter: CatalogFilter[] = PriceFilter;
   sortFilter: CatalogFilter[] = SortFilter;
   itemsPerPageFilter: CatalogFilter[] = ItemsPerPageFilter;
   statusFilter: CatalogFilter[] = StatusFilter;
 
+  matcher: MediaQueryList;
+
   constructor(
     private store: Store<AppState>,
+    public breakpointObserver: BreakpointObserver,
+    public mediaMatcher: MediaMatcher
   ) {
     this.toggleSidnav = this.store.select(selectSidenav);
     this.filters$ = this.store.select(selectArtworksFilters);
@@ -50,6 +59,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.toggleSidnavSubscription$ = this.toggleSidnav.subscribe((isOpen: boolean) => {
+      this.openside = isOpen;
+    });
     this.isLoadingSubscription$ = this.isLoading$.subscribe((isLoading: boolean) => {
       if (isLoading !== undefined) {
         this.isLoading = isLoading;
@@ -59,6 +72,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         isLoading ? this.filtersForm.controls.price.disable() : this.filtersForm.controls.price.enable();
         isLoading ? this.filtersForm.controls.ipp.disable() : this.filtersForm.controls.ipp.enable();
         isLoading ? this.filtersForm.controls.page.disable() : this.filtersForm.controls.page.enable();
+        isLoading ? this.filtersForm.controls.status.disable() : this.filtersForm.controls.status.enable();
       }
     });
     this.filtersSubscription$ = this.filters$.subscribe((filters) => {
@@ -74,6 +88,12 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.filtersSubscription$.unsubscribe();
+    this.toggleSidnavSubscription$.unsubscribe();
+    this.isLoadingSubscription$.unsubscribe();
+  }
+
+  myListener(event: any) {
+    console.log(event.matches ? 'match' : 'no match');
   }
 
   public submitForm(): void {

@@ -1,7 +1,5 @@
 <div class="filters-form-container">
 
-  <!-- <p><button mat-button (click)="sidenav.toggle()">Toggle A</button></p> -->
-
   <form class="mt-20" [formGroup]="filtersForm">
 
     <mat-form-field appearance="standard">
@@ -23,7 +21,6 @@
     <mat-form-field appearance="standard">
       <mat-label>Price</mat-label>
       <mat-select formControlName="price">
-        <!-- <mat-option (click)="cleanPrice()">-- None --</mat-option> -->
         <mat-option *ngFor="let price of priceFilter" [value]="price.id">
           {{ price.label }}
         </mat-option>
@@ -34,7 +31,6 @@
     <mat-form-field appearance="standard">
       <mat-label>Category</mat-label>
       <mat-select formControlName="category" multiple>
-        <!-- <mat-option (click)="cleanCategory()">-- None --</mat-option> -->
         <mat-option *ngFor="let category of categoryFilter" [value]="category.id">
           {{ category.label }}
         </mat-option>
@@ -45,7 +41,6 @@
     <mat-form-field appearance="standard">
       <mat-label>Items per page</mat-label>
       <mat-select formControlName="ipp">
-        <!-- <mat-option (click)="cleanIpp()">-- None --</mat-option> -->
         <mat-option *ngFor="let ipp of itemsPerPageFilter" [value]="ipp.id">
           {{ ipp.label }}
         </mat-option>
@@ -65,18 +60,26 @@
 
     <br>
 
-    <!-- <button mat-raised-button type="button" color="primary" (click)="applyFilters()">Apply filters</button>
-      <button mat-raised-button type="button" color="accent" (click)="resetFilters()">Re-init filters</button> -->
-    <button mat-raised-button type="button" color="primary" (click)="submitForm()" [disabled]="isLoading">
+    <button mat-raised-button type="button" class="grey-btn" (click)="submitForm()" [disabled]="isLoading">
       Apply filters
     </button>
 
-    <button mat-raised-button type="button" color="accent" (click)="resetFilters()" [disabled]="isLoading">
-      Reset filters
+  </form>
+
+  <br>
+
+  <div class="action-btns txt-r">
+    <button mat-mini-fab type="button" class="grey-btn grey-btn-round" (click)="resetFilters()" [disabled]="isLoading"
+      matTooltip="Reset filters">
+      <mat-icon>settings_backup_restore</mat-icon>
     </button>
 
-    <button mat-raised-button type=" button" color="warn" (click)="clearAllFilters()" [disabled]="isLoading">
-      Clear all filters
+    &nbsp;
+
+    <button mat-mini-fab type="button" class="grey-btn" (click)="clearAllFilters()" [disabled]="isLoading"
+      matTooltip=" Clear all filters">
+      <mat-icon>delete</mat-icon>
     </button>
-  </form>
+  </div>
+
 </div>
