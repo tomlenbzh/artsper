@@ -1,0 +1,21 @@
+<app-header></app-header>
+
+<div class="app-layout">
+  <mat-sidenav-container class="example-container">
+
+    {{ isOpen }}
+
+    <mat-sidenav #sidenav [opened]="isOpen" [mode]="mode">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+
+
+    <mat-sidenav-content>
+
+      <p><button mat-button (click)="toggleSidenav()">Toggle B</button></p>
+
+      <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

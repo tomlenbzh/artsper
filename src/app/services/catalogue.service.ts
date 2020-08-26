@@ -28,7 +28,7 @@ export class CatalogueService {
   }
 
   private setPageFilter(page: number): string {
-    return `&page=${page}`;
+    return (page === null) ? '' : `&page=${page}`;
   }
 
   private setPriceFilter(price: string | null): string {
@@ -68,7 +68,7 @@ export class CatalogueService {
   }
 
   private setIppFilter(ipp: string): string {
-    return `ipp=${ipp}`;
+    return (ipp === null) ? '' : `&ipp=${ipp}`;
   }
 
   private setSearchFilter(search: string | null): string {

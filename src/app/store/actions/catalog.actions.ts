@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-// import { CatalogFilters } from '../../models/catalog.model';
+import { ArtworksFilters } from '../../models/catalog.model';
 
 export enum CatalogActionTypes {
   FETCH_ARTWORKS = '[CATALOG] Fetch artworks',
@@ -7,6 +7,7 @@ export enum CatalogActionTypes {
   FETCH_ARTWORKS_FAILURE = '[CATALOG] Fetch artworks error',
   LOADING_ARTWORKS_START = '[CATALOG] LOADING Start',
   LOADING_ARTWORKS_END = '[CATALOG] LOADING End',
+  APPLY_FILTERS = '[CATALOG] Set Filters'
 }
 
 /**
@@ -47,6 +48,14 @@ export class LoadingArtworksStart implements Action {
 export class LoadingArtworksEnd implements Action {
   readonly type = CatalogActionTypes.LOADING_ARTWORKS_END;
   constructor(readonly payload: any) { }
+}
+
+/**
+ * ApplyFilters ACTION
+ */
+export class ApplyFilters implements Action {
+  readonly type = CatalogActionTypes.APPLY_FILTERS;
+  constructor(readonly payload: ArtworksFilters) { }
 }
 
 export type CatalogActions =

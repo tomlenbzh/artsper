@@ -1,16 +1,19 @@
 import { CatalogActionTypes } from '../actions/catalog.actions';
-import { ArtworkList } from '../../models/catalog.model';
+import { ArtworkList, ArtworksFilters } from '../../models/catalog.model';
+import { initalFilters } from '../../data/filters.data';
 
 export interface CatalogState {
   isLoading: boolean | null;
   artworksList: ArtworkList | null;
   errorMessage: string | null;
+  filters: ArtworksFilters;
 }
 
 const initialAuthState: CatalogState = {
   isLoading: false,
   artworksList: null,
-  errorMessage: null
+  errorMessage: null,
+  filters: initalFilters
 };
 
 export function catalogReducer(state: CatalogState = initialAuthState, action: any): CatalogState {
@@ -43,6 +46,13 @@ export function catalogReducer(state: CatalogState = initialAuthState, action: a
       return {
         ...state,
         isLoading: false
+      };
+    }
+
+    case CatalogActionTypes.APPLY_FILTERS: {
+      return {
+        ...state,
+        filters: action.payload
       };
     }
 

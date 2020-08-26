@@ -7,8 +7,8 @@ export enum AuthActionTypes {
   LOGIN_FAILURE = '[Auth] Login Failure',
   LOGOUT = '[AUTH] Logout',
   LOG_BACK_IN = '[AUTH] Log back in',
-  LOADING_START = '[AUTH] LOADING Start',
-  LOADING_END = '[AUTH] LOADING End',
+  LOADING_AUTH_START = '[AUTH] LOADING Auth Start',
+  LOADING_AUTH_END = '[AUTH] LOADING Auth End',
 }
 
 /**
@@ -40,6 +40,7 @@ export class LogInFailure implements Action {
  */
 export class LogOut implements Action {
   readonly type = AuthActionTypes.LOGOUT;
+  constructor(readonly payload: any) { }
 }
 
 /**
@@ -51,17 +52,19 @@ export class LogBackIn implements Action {
 }
 
 /**
- * LoadingStart ACTION
+ * LoadingAuthStart ACTION
  */
-export class LoadingStart implements Action {
-  readonly type = AuthActionTypes.LOADING_START;
+export class LoadingAuthStart implements Action {
+  readonly type = AuthActionTypes.LOADING_AUTH_START;
+  constructor(readonly payload: any) { }
 }
 
 /**
- * LoadingEnd ACTION
+ * LoadingAuthEnd ACTION
  */
-export class LoadingEnd implements Action {
-  readonly type = AuthActionTypes.LOADING_END;
+export class LoadingAuthEnd implements Action {
+  readonly type = AuthActionTypes.LOADING_AUTH_END;
+  constructor(readonly payload: any) { }
 }
 
 export type Actions =
@@ -69,4 +72,6 @@ export type Actions =
   LogInSuccess |
   LogInFailure |
   LogOut |
-  LogBackIn;
+  LogBackIn |
+  LoadingAuthStart |
+  LoadingAuthEnd;

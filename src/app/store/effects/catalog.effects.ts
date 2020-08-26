@@ -84,4 +84,15 @@ export class CatalogEffects {
       console.log('[LOADING END]', error);
     })
   );
+
+  /**
+   * ApplyFilters EFFECT
+   */
+  @Effect({ dispatch: false })
+  ApplyFilters: Observable<any> = this.actions$.pipe(
+    ofType(CatalogActionTypes.APPLY_FILTERS),
+    tap((payload) => {
+      console.log('[APPLY FILTERS]', payload);
+    })
+  );
 }

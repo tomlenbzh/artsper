@@ -3,20 +3,31 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthError } from '../store';
 
 import { AuthenticationService } from '../../services/authentication.service';
+import { CustomSnackbarService } from '../../services/custom-snackbar.service';
+
 import { AuthCredentials } from '../../models/auth.model';
-import { LogIn, AuthActionTypes, LogInSuccess, LogInFailure } from '../actions/auth.actions';
-import { stringify } from 'querystring';
+import { LogIn, AuthActionTypes, LogInSuccess, LogInFailure, LoadingAuthEnd, LoadingAuthStart } from '../actions/auth.actions';
 
 @Injectable()
 export class AuthEffects {
 
+  errorMessageObsv: string | null;
+
   constructor(
     private actions$: Actions,
+    private store: Store<AppState>,
     private authService: AuthenticationService,
-    private router: Router
-  ) { }
+    private snack: CustomSnackbarService,
+    private router: Router,
+  ) {
+    this.store.select(selectAuthError).subscribe((error) => {
+      this.errorMessageObsv = error;
+    });
+  }
 
   /**
    * Login EFFECT
@@ -46,7 +57,15 @@ export class AuthEffects {
     tap((user) => {
       console.log('[LOGIN SUCCESS]', user.payload);
       localStorage.setItem('userProfile', JSON.stringify(user.payload));
-      this.router.navigateByUrl('/catalogue');
+      setTimeout(() => {
+        this.snack.open(`Welcome ${user.payload.email}!`, null, 2000, 'login-success-snackbar');
+        setTimeout(() => {
+          this.router.navigateByUrl('/');
+          setTimeout(() => {
+            this.store.dispatch(new LoadingAuthEnd({}));
+          }, 1000);
+        }, 500);
+      }, 1000);
     })
   );
 
@@ -58,8 +77,12 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   LogInFailure: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOGIN_FAILURE),
-    tap((error) => {
-      console.log('[LOGIN ERROR]', error);
+    tap((payload) => {
+      console.log('[LOGIN ERROR]', payload);
+      setTimeout(() => {
+        this.store.dispatch(new LoadingAuthEnd({}));
+        this.snack.open(`Invalid email and/or password`, 'OK', null, 'login-failure-snackbar');
+      }, 1000);
     })
   );
 
@@ -76,6 +99,9 @@ export class AuthEffects {
         console.log('[LOGOUT]');
         localStorage.removeItem('userProfile');
         this.router.navigateByUrl('/login');
+        setTimeout(() => {
+          this.snack.open('GOOD BY!', null, 2000, 'logout-snackbar');
+        }, 500);
       })
     );
 
@@ -85,10 +111,10 @@ export class AuthEffects {
    * Redirects to home
    */
   @Effect({ dispatch: false })
-  LoadingStart: Observable<any> = this.actions$.pipe(
-    ofType(AuthActionTypes.LOADING_START),
+  LoadingAuthStart: Observable<any> = this.actions$.pipe(
+    ofType(AuthActionTypes.LOADING_AUTH_START),
     tap(() => {
-      console.log('[LOADING START]');
+      console.log('[LOADING AUTH START]');
     })
   );
 
@@ -98,10 +124,10 @@ export class AuthEffects {
    * Redirects to home
    */
   @Effect({ dispatch: false })
-  LoadingEnd: Observable<any> = this.actions$.pipe(
-    ofType(AuthActionTypes.LOADING_END),
+  LoadingAuthEnd: Observable<any> = this.actions$.pipe(
+    ofType(AuthActionTypes.LOADING_AUTH_END),
     tap(() => {
-      console.log('[LOADING END]');
+      console.log('[LOADING AUTH END]');
     })
   );
 
@@ -112,9 +138,8 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   LogBackIn: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOG_BACK_IN),
-    tap(() => {
-      console.log('[LOG BACK IN]');
-      // this.router.navigateByUrl('/catalogue');
+    tap((payload) => {
+      console.log('[LOG BACK IN]', payload);
     })
   );
 }

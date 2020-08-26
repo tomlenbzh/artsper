@@ -6,8 +6,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { CatalogueRoutingModule } from './catalogue-routing.module';
 import { CatalogueComponent } from './catalogue.component';
-import { MaterialModule } from '../../material.module';
-import { SharedModule } from '../../components/shared.module';
+import { MaterialModule } from '../../../material.module';
+import { SharedModule } from '../../../components/shared.module';
 
 @NgModule({
   declarations: [CatalogueComponent],

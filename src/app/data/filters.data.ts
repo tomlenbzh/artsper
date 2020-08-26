@@ -1,4 +1,5 @@
 import { CatalogFilter } from '../models/filters.model';
+import { ArtworksFilters } from '../models/catalog.model';
 
 export const CategoryFilter: CatalogFilter[] = [
   { id: '6', label: 'Painting' },
@@ -43,3 +44,13 @@ export const StatusFilter: CatalogFilter[] = [
   { id: 'Soldout', label: 'All Soldout Artworks' },
   { id: 'Promotions ', label: 'All discounted Artworks' },
 ];
+
+export const initalFilters: ArtworksFilters = {
+  search: null,
+  category: null,
+  sort: SortFilter[4].id,
+  price: null,
+  ipp: ItemsPerPageFilter[0].id,
+  status: [StatusFilter[1].id],
+  page: 1,
+};

@@ -25,16 +25,11 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this.authService = this.injector.get(AuthenticationService);
-    // const token: string = this.authService.getAccessToken();
     const userProfile: User = JSON.parse(this.authService.getAccessToken());
-
-    console.log('INTERCEPT TOKEN', userProfile?.token);
 
     if (this.checkExcludedUrl(request.url) === true) {
       request = request.clone({
-        setHeaders: {
-          'Content-Type': 'application/json',
-        }
+        setHeaders: { 'Content-Type': 'application/json' }
       });
     } else {
       request = request.clone({
@@ -45,7 +40,6 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    console.log('[REQUEST]', request);
     return next.handle(request);
   }
 

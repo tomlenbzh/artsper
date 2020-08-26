@@ -1,0 +1,29 @@
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-radio-group {
+  display: block;
+  border: 1px solid #555;
+  margin: 20px;
+  padding: 10px;
+}
+
+.app-layout {
+  height: 100%;
+  padding-top: 60px;
+}
+
+.mat-drawer {
+  top: 58px !important;
+  width: 300px !important;
+  box-shadow: 2px 0px 5px -2px #c6c6c6 !important;
+}
+
+.mat-drawer-content {
+  top: 58px !important;
+}

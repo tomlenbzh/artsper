@@ -6,23 +6,38 @@ import { MaterialModule } from '../material.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { HeaderComponent } from './header/header.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ArtworksListComponent } from './artworks-list/artworks-list.component';
 
 @NgModule({
   declarations: [
-    ArtworkCardComponent
+    ArtworkCardComponent,
+    HeaderComponent,
+    SidenavComponent,
+    ArtworksListComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
     NgxPaginationModule,
     LazyLoadImageModule,
+    FormsModule,
+    ReactiveFormsModule,
     ScrollToModule.forRoot()
   ],
   exports: [
-    ArtworkCardComponent
+    ArtworkCardComponent,
+    HeaderComponent,
+    SidenavComponent,
+    ArtworksListComponent
   ],
   entryComponents: [
-    ArtworkCardComponent
+    ArtworkCardComponent,
+    HeaderComponent,
+    SidenavComponent,
+    ArtworksListComponent
   ]
 })
 export class SharedModule { }

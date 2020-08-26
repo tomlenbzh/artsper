@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import { AppState, selectAuth } from '../../store/store';
-import { LogIn, LogBackIn } from '../../store/actions/auth.actions';
+import { LogIn, LogBackIn, LoadingAuthStart } from '../../store/actions/auth.actions';
 import { AuthCredentials, User } from '../../models/auth.model';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -16,34 +17,31 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
   });
+
+  get email() { return this.loginForm.get('email'); }
+
+  get password() { return this.loginForm.get('password'); }
 
   getAuthState: Observable<any>;
   authStateSubscription: Subscription;
 
-  isLoading: boolean | null;
-  isAuthenticated: boolean | null;
-  user: User | null;
-  errorMessage: string | null;
+  isLoading: boolean;
   credentials: AuthCredentials;
 
   constructor(
     private store: Store<AppState>,
-    private authService: AuthenticationService,
   ) {
     this.getAuthState = this.store.select(selectAuth);
   }
 
   ngOnInit(): void {
-    this.isAlreadyLogguedIn();
     this.credentials = { email: '', password: '' };
     this.authStateSubscription = this.getAuthState.subscribe((state) => {
-      this.user = state.user;
-      this.isAuthenticated = state.isAuthenticated;
-      this.errorMessage = state.errorMessage;
       this.isLoading = state.isLoading;
+      console.log('IS LOADING:', this.isLoading);
     });
   }
 
@@ -56,17 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Logs the user in the application
    */
   public login(): void {
+    this.store.dispatch(new LoadingAuthStart({}));
     this.store.dispatch(new LogIn(this.loginForm.value));
-  }
-
-  /**
-   * isAlreadyLogguedIn()
-   * Checks if there is already a profile in the localstorage
-   */
-  private isAlreadyLogguedIn(): void {
-    const userProfile = this.authService.getAccessToken();
-    if (this.authService.getAccessToken()) {
-      this.store.dispatch(new LogBackIn({ userProfile }));
-    }
   }
 }
