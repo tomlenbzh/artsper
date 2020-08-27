@@ -5,11 +5,8 @@
     <mat-sidenav #sidenav [opened]="isOpen" [mode]="mode" (closedStart)="onClose()">
       <app-sidenav></app-sidenav>
     </mat-sidenav>
-
     <mat-sidenav-content #content id="content">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
-
   </mat-sidenav-container>
-
 </div>

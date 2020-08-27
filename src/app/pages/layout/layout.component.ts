@@ -5,7 +5,7 @@ import { AppState, selectSidenav, selectAuthIsAuthenticated } from '../../store/
 import { OpenSidenav, CloseSidenav } from '../../store/actions/sidenav.actions';
 import { Observable, Subscription } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
-import { LogBackIn } from 'src/app/store/actions/auth.actions';
+import { LogBackIn } from '../../store/actions/auth.actions';
 import { PlatformService } from '../../services/platform.service';
 import { Router } from '@angular/router';
 
@@ -49,22 +49,20 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    if (this.platformService.isPlatformBrowser) {
+    const mql = window.matchMedia('(max-width: 767px)');
 
+    if (this.platformService.isPlatformBrowser) {
       this.isAuthenticatedSubscription$ = this.isAuthenticated$.subscribe((isAuth: boolean) => {
         this.isAlreadyLogguedIn(isAuth);
       });
-
       this.sidenavSubscription$ = this.toggleSidenav$.subscribe((isOpen: boolean) => {
         if (isOpen !== undefined && !this.noSidebar) {
           this.isOpen = isOpen;
         }
       });
 
-      const mql = window.matchMedia('(max-width: 767px)');
-
-      mql.addEventListener('change', (e: any) => {
-        if (e.matches) {
+      mql.addEventListener('change', (event$: any) => {
+        if (event$.matches) {
           if (this.mode === 'side' && !this.noSidebar) {
             this.mode = 'over';
             this.store.dispatch(new CloseSidenav({}));
@@ -82,12 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClose(): void {
-    if (!this.noSidebar) {
-      this.store.dispatch(new CloseSidenav({}));
-    }
-  }
-
   ngOnDestroy(): void {
     this.sidenavSubscription$.unsubscribe();
     this.isAuthenticatedSubscription$.unsubscribe();
@@ -101,6 +93,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
     const userProfile = JSON.parse(this.authService.getAccessToken());
     if (this.authService.getAccessToken() && !isAuth) {
       this.store.dispatch(new LogBackIn(userProfile));
+    }
+  }
+
+  /**
+   * onClose()
+   * Close the sidebar if it is enabled on the page
+   */
+  onClose(): void {
+    if (!this.noSidebar) {
+      this.store.dispatch(new CloseSidenav({}));
     }
   }
 }

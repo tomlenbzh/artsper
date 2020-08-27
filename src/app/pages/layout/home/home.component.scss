@@ -56,3 +56,18 @@
   padding: 10px 50px;
   text-transform: uppercase;
 }
+
+@media screen and (max-width: 800px) {
+  .home-title {
+    font-size: x-large;
+    margin-bottom: 20px;
+  }
+  .home-subtitle {
+    font-size: large;
+    margin-bottom: 20px;
+  }
+  .artsper-logo {
+    width: 150px;
+    margin-bottom: 30px;
+  }
+}

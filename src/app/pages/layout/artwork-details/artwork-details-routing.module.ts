@@ -7,7 +7,6 @@ const routes: Routes = [
   { path: '', component: ArtworkDetailsComponent },
 ];
 
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

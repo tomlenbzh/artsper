@@ -2,7 +2,12 @@
   <div class="header">
     <img [defaultImage]="artsperLogo" [lazyLoad]="artsperLogo"
       class="artsper-logo artwork-card animate__animated animate__fadeIn" [routerLink]="['/home']">
-    <button mat-button type="button" [matMenuTriggerFor]="menu">{{ userEmail$ | async }}</button>
+    <button mat-button type="button" [matMenuTriggerFor]="menu" class="large-menu animate__animated animate__fadeIn">
+      {{ userEmail$ | async }}
+    </button>
+    <button mat-button type="button" [matMenuTriggerFor]="menu" class="sm-menu animate__animated animate__fadeIn">
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="logout()">

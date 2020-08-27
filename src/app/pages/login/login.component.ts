@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+
 import { AppState, selectAuth } from '../../store/store';
-import { LogIn, LogBackIn, LoadingAuthStart } from '../../store/actions/auth.actions';
-import { AuthCredentials, User } from '../../models/auth.model';
-import { AuthenticationService } from '../../services/authentication.service';
+import { LogIn, LoadingAuthStart } from '../../store/actions/auth.actions';
+import { AuthCredentials } from '../../models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -24,33 +23,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   public loginBackground = `https://www.wallpapertip.com/wmimgs/77-774852_leonid-afremov-late-stroll.jpg`;
   public artsperLogo = `https://blog.artsper.com/wp-content/uploads/2018/06/Logo_Black.png`;
 
+  private getAuthState$: Observable<any>;
+  private authStateSubscription$: Subscription;
 
-  get email() { return this.loginForm.get('email'); }
+  public isLoading: boolean;
+  private credentials: AuthCredentials;
 
-  get password() { return this.loginForm.get('password'); }
-
-  getAuthState: Observable<any>;
-  authStateSubscription: Subscription;
-
-  isLoading: boolean;
-  credentials: AuthCredentials;
-
-  constructor(
-    private store: Store<AppState>,
-  ) {
-    this.getAuthState = this.store.select(selectAuth);
+  constructor(private store: Store<AppState>) {
+    this.getAuthState$ = this.store.select(selectAuth);
   }
 
   ngOnInit(): void {
     this.credentials = { email: '', password: '' };
-    this.authStateSubscription = this.getAuthState.subscribe((state) => {
+    this.authStateSubscription$ = this.getAuthState$.subscribe((state) => {
       this.isLoading = state.isLoading;
-      console.log('IS LOADING:', this.isLoading);
     });
   }
 
   ngOnDestroy(): void {
-    this.authStateSubscription.unsubscribe();
+    this.authStateSubscription$.unsubscribe();
   }
 
   /**
@@ -61,4 +52,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LoadingAuthStart({}));
     this.store.dispatch(new LogIn(this.loginForm.value));
   }
+
+  /**
+   * get email()
+   * Allows to access email formControl in the template
+   */
+  get email() { return this.loginForm.get('email'); }
+
+  /**
+   * get password()
+   * Allows to access password formControl in the template
+   */
+  get password() { return this.loginForm.get('password'); }
 }

@@ -25,3 +25,21 @@
 .artsper-logo:hover {
   transform: scale(0.9);
 }
+
+.large-menu {
+  display: block;
+}
+
+.sm-menu {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  .large-menu {
+    display: none;
+  }
+
+  .sm-menu {
+    display: block;
+  }
+}

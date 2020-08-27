@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { AppState, selectSidenav, selectArtworksFilters, selectIsArtworksListLoading } from '../../store/store';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { CatalogFilter } from '../../models/filters.model';
-import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilter, initalFilters } from '../../data/filters.data';
-import { ArtworksFilters } from '../../models/catalog.model';
-import { ApplyFilters } from '../../store/actions/catalog.actions';
-import { MediaMatcher, BreakpointObserver } from '@angular/cdk/layout';
+import { Observable, Subscription } from 'rxjs';
+
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
+
+import { Store } from '@ngrx/store';
+import { AppState, selectArtworksFilters, selectIsArtworksListLoading } from '../../store/store';
+import { ApplyFilters } from '../../store/actions/catalog.actions';
+
+import { CatalogFilter } from '../../models/filters.model';
+import { ArtworksFilters } from '../../models/catalog.model';
+import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilter, initalFilters } from '../../data/filters.data';
 
 @Component({
   selector: 'app-sidenav',
@@ -39,32 +41,22 @@ export class SidenavComponent implements OnInit, OnDestroy {
     page: new FormControl(),
   });
 
-  openside = false;
-
   categoryFilter: CatalogFilter[] = CategoryFilter;
   priceFilter: CatalogFilter[] = PriceFilter;
   sortFilter: CatalogFilter[] = SortFilter;
   itemsPerPageFilter: CatalogFilter[] = ItemsPerPageFilter;
   statusFilter: CatalogFilter[] = StatusFilter;
 
-  matcher: MediaQueryList;
-
   constructor(
     private store: Store<AppState>,
-    public breakpointObserver: BreakpointObserver,
-    public mediaMatcher: MediaMatcher,
     private scrollToService: ScrollToService
   ) {
-    this.toggleSidnav = this.store.select(selectSidenav);
     this.filters$ = this.store.select(selectArtworksFilters);
     this.isLoading$ = this.store.select(selectIsArtworksListLoading);
   }
 
   ngOnInit(): void {
 
-    this.toggleSidnavSubscription$ = this.toggleSidnav.subscribe((isOpen: boolean) => {
-      this.openside = isOpen;
-    });
     this.isLoadingSubscription$ = this.isLoading$.subscribe((isLoading: boolean) => {
       if (isLoading !== undefined) {
         this.isLoading = isLoading;
@@ -90,28 +82,33 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.filtersSubscription$.unsubscribe();
-    this.toggleSidnavSubscription$.unsubscribe();
     this.isLoadingSubscription$.unsubscribe();
   }
 
-  myListener(event: any) {
-    console.log(event.matches ? 'match' : 'no match');
-  }
-
+  /**
+   * submitForm()
+   * Applies new filters to the research
+   */
   public submitForm(): void {
     const newFilter: ArtworksFilters = this.filtersForm.value;
-    console.log('SUBMIT FORM', newFilter);
     this.store.dispatch(new ApplyFilters(newFilter));
     this.scrollTo('#top');
   }
 
+  /**
+   * resetFilters()
+   * Reset filters to their initial state
+   */
   public resetFilters(): void {
     const newFilter: ArtworksFilters = initalFilters;
-    console.log('RESET FILTERS', newFilter);
     this.store.dispatch(new ApplyFilters(initalFilters));
     this.scrollTo('#top');
   }
 
+  /**
+   * clearAllFilters()
+   * Removes all filters on the research
+   */
   public clearAllFilters(): void {
     this.filtersForm.controls.search.patchValue(null);
     this.filtersForm.controls.sort.patchValue(null);
@@ -120,7 +117,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.filtersForm.controls.ipp.patchValue(null);
     this.filtersForm.controls.page.patchValue(null);
     this.filtersForm.controls.status.patchValue(null);
-    console.log('RESET FILTERS', this.filtersForm.value);
     this.store.dispatch(new ApplyFilters(this.filtersForm.value));
     this.scrollTo('#top');
   }

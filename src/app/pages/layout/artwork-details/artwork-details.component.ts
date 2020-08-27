@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { ArtworkDetailsService } from '../../../services/artwork-details.service';
-import * as moment from 'moment';
+import { PlatformService } from '../../../services/platform.service';
+
 import { NgImageSliderComponent } from 'ng-image-slider';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-artwork-details',
@@ -31,18 +34,19 @@ export class ArtworkDetailsComponent implements OnInit {
   public errorImg: string;
   public limitedEdition: boolean;
 
-  imageObject: Array<object> = [];
-
   constructor(
     private router: Router,
-    private artworkDetailsService: ArtworkDetailsService
+    private artworkDetailsService: ArtworkDetailsService,
+    private platformService: PlatformService
   ) { }
 
   ngOnInit(): void {
-    this.artworkDetailsService.artworkExists()
-      ? (this.artwork = this.artworkDetailsService.getArtworkDetails(), this.initArtwork())
-      : this.router.navigateByUrl('/catalogue');
-    console.log('this.artwork', this.artwork);
+
+    if (this.platformService.isPlatformBrowser()) {
+      this.artworkDetailsService.artworkExists()
+        ? (this.artwork = this.artworkDetailsService.getArtworkDetails(), this.initArtwork())
+        : this.router.navigateByUrl('/catalogue');
+    }
   }
 
   private initArtwork(): void {
@@ -69,7 +73,6 @@ export class ArtworkDetailsComponent implements OnInit {
         };
       }
     });
-    console.log('GALLERY', this.imagesGallery);
   }
 
   prevImageClick() {

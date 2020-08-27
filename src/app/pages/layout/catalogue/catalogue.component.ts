@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
+import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
+
+import { Store } from '@ngrx/store';
 import {
   AppState,
   selectArtworksListData,
@@ -13,15 +15,12 @@ import {
 } from '../../../store/store';
 
 import { FetchArtworks, LoadingArtworksStart, ApplyFilters } from '../../../store/actions/catalog.actions';
-import { PlatformService } from '../../../services/platform.service';
-
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
-
-import { initalFilters } from '../../../data/filters.data';
-import { ArtworksFilters } from '../../../models/catalog.model';
 import { CloseSidenav, OpenSidenav } from '../../../store/actions/sidenav.actions';
 
+import { ArtworksFilters } from '../../../models/catalog.model';
+import { initalFilters } from '../../../data/filters.data';
+
+import { PlatformService } from '../../../services/platform.service';
 import { RotateIcon } from '../../../tools/animations/catalogue.animatons';
 
 @Component({
@@ -34,7 +33,7 @@ import { RotateIcon } from '../../../tools/animations/catalogue.animatons';
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
-  private overlayElement = null;
+  // private overlayElement = null;
   private document: Document;
 
   public artworksList$: Observable<any[]>;
@@ -89,8 +88,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
       this.showLoader = false;
       this.document = this.platformService.windowRefService.nativeWindow.document;
-      this.overlayElement = this.document.querySelector('#overlay');
-
       this.store.dispatch(new ApplyFilters(initalFilters));
 
       this.filtersSubscription$ = this.filters$.subscribe((newFilters: ArtworksFilters) => {
@@ -106,26 +103,31 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           this.isSidenavOpen = isOpen;
         }
       });
+
       this.artworksMetaSubscription$ = this.artworksMeta$.subscribe((meta: any) => {
         if (meta) {
           this.pagination = meta;
           this.pagesNumber = this.pagination?.total_items / this.pagination?.current_items;
         }
       });
+
       this.isLoadingSubscription$ = this.isLoading$.subscribe((value: boolean) => {
         this.showLoader = value;
-        value === true ? disableBodyScroll(this.overlayElement) : enableBodyScroll(this.overlayElement);
       });
     }
   }
 
   ngOnDestroy(): void {
-    clearAllBodyScrollLocks();
     this.artworksMetaSubscription$.unsubscribe();
     this.isLoadingSubscription$.unsubscribe();
     this.filtersSubscription$.unsubscribe();
   }
 
+  /**
+   * changePage()
+   * @param $event : any
+   * Applies a new filter when the page number has been changed
+   */
   public changePage($event: any) {
 
     const newFilters: ArtworksFilters = {
@@ -142,10 +144,10 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.scrollTo('#top');
   }
 
+  /**
+   * Show / Hide the filter sidebar
+   */
   public toggleSidenavStatus(): void {
-
-    console.log('SIDENAV ?', this.isSidenavOpen);
-
     if (!this.isSidenavOpen) {
       this.store.dispatch(new OpenSidenav({}));
     } else {
@@ -153,6 +155,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Show / Hide the filter sidebar
+   * @param target: string
+   * Scrolls to target position in the page
+   */
   private scrollTo(target: string): void {
     const config: ScrollToConfigOptions = { target, duration: 1500, offset: -100 };
     this.scrollToService.scrollTo(config);

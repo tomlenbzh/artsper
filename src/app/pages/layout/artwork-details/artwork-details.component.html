@@ -1,5 +1,4 @@
 <div class="artwork-header pt-30">
-
   <div class="container">
 
     <div class="artwork-header-content animate__animated animate__fadeIn">
@@ -17,11 +16,9 @@
     </div>
 
   </div>
-
 </div>
 
 <div class="container">
-
   <div class="mt-30 pt-30">
 
     <div *ngIf="limitedEdition" class="limited-edition mb-50">
@@ -72,7 +69,6 @@
         <div class="gallery-name mb-20">{{ galleryInfo?.gallery_name }}</div>
         <img [defaultImage]="galleryInfo?.image?.absolute_path" [lazyLoad]="galleryInfo?.image?.absolute_path"
           [errorImage]="galleryInfo?.image?.absolute_path" class="gallery-img">
-
       </div>
     </div>
 
