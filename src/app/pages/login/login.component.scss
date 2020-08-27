@@ -54,7 +54,7 @@
 .login-btn {
   margin-top: 30px;
   background: #39505c;
-  color-interpolation-filters: white;
+  color: white;
 }
 
 .loader-container {
@@ -107,6 +107,15 @@ mat-icon {
 // mat-label error style
 ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
   color: red !important;
+}
+
+.mat-progress-spinner {
+  margin: auto !important;
+}
+
+:host ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: #39505c !important;
 }
 
 @media screen and (max-width: 400px) {

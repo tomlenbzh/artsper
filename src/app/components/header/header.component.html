@@ -1,6 +1,7 @@
 <div class="app-header">
   <div class="header">
-    <img [src]="artsperLogo" class="artsper-logo">
+    <img [defaultImage]="artsperLogo" [lazyLoad]="artsperLogo"
+      class="artsper-logo artwork-card animate__animated animate__fadeIn" [routerLink]="['/home']">
     <button mat-button type="button" [matMenuTriggerFor]="menu">{{ userEmail$ | async }}</button>
   </div>
   <mat-menu #menu="matMenu">

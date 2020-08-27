@@ -12,7 +12,7 @@
     <p class="artwork-txt">Dimensions: {{ dimensions }}</p>
     <p class="artwork-txt">Price: {{ price }}</p>
     <div class="actions">
-      <button mat-icon-button matTooltip="More information">
+      <button mat-icon-button matTooltip="More information" [routerLink]="['/artwork-details']">
         <mat-icon>more_horiz</mat-icon>
       </button>
     </div>

@@ -8,6 +8,7 @@ import { CategoryFilter, PriceFilter, SortFilter, ItemsPerPageFilter, StatusFilt
 import { ArtworksFilters } from '../../models/catalog.model';
 import { ApplyFilters } from '../../store/actions/catalog.actions';
 import { MediaMatcher, BreakpointObserver } from '@angular/cdk/layout';
+import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
 @Component({
   selector: 'app-sidenav',
@@ -51,7 +52,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     public breakpointObserver: BreakpointObserver,
-    public mediaMatcher: MediaMatcher
+    public mediaMatcher: MediaMatcher,
+    private scrollToService: ScrollToService
   ) {
     this.toggleSidnav = this.store.select(selectSidenav);
     this.filters$ = this.store.select(selectArtworksFilters);
@@ -100,12 +102,14 @@ export class SidenavComponent implements OnInit, OnDestroy {
     const newFilter: ArtworksFilters = this.filtersForm.value;
     console.log('SUBMIT FORM', newFilter);
     this.store.dispatch(new ApplyFilters(newFilter));
+    this.scrollTo('#top');
   }
 
   public resetFilters(): void {
     const newFilter: ArtworksFilters = initalFilters;
     console.log('RESET FILTERS', newFilter);
     this.store.dispatch(new ApplyFilters(initalFilters));
+    this.scrollTo('#top');
   }
 
   public clearAllFilters(): void {
@@ -118,5 +122,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
     this.filtersForm.controls.status.patchValue(null);
     console.log('RESET FILTERS', this.filtersForm.value);
     this.store.dispatch(new ApplyFilters(this.filtersForm.value));
+    this.scrollTo('#top');
+  }
+
+  private scrollTo(target: string): void {
+    const config: ScrollToConfigOptions = { target, duration: 1500, offset: -100 };
+    this.scrollToService.scrollTo(config);
   }
 }

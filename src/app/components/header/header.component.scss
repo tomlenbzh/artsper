@@ -18,4 +18,10 @@
 
 .artsper-logo {
   height: 50px;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.artsper-logo:hover {
+  transform: scale(0.9);
 }

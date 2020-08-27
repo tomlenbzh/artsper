@@ -8,37 +8,59 @@ import {
   selectArtworksListData,
   selectArtworksListMeta,
   selectIsArtworksListLoading,
-  selectArtworksListError,
-  selectAuthEmail,
-  selectArtworksFilters
+  selectArtworksFilters,
+  selectSidenav
 } from '../../../store/store';
 
 import { FetchArtworks, LoadingArtworksStart, ApplyFilters } from '../../../store/actions/catalog.actions';
 import { PlatformService } from '../../../services/platform.service';
 
-import { AuthenticationService } from '../../../services/authentication.service';
-
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
 import { initalFilters } from '../../../data/filters.data';
-import { ArtworksFilters } from 'src/app/models/catalog.model';
+import { ArtworksFilters } from '../../../models/catalog.model';
+import { CloseSidenav, OpenSidenav } from '../../../store/actions/sidenav.actions';
+
+import { RotateIcon } from '../../../tools/animations/catalogue.animatons';
 
 @Component({
   selector: 'app-catalogue',
   templateUrl: './catalogue.component.html',
-  styleUrls: ['./catalogue.component.scss']
+  styleUrls: ['./catalogue.component.scss'],
+  animations: [
+    RotateIcon,
+  ]
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
   private overlayElement = null;
   private document: Document;
 
-  totalRecords: number;
-  currentPage: number;
-  pagesNumber: number;
+  public artworksList$: Observable<any[]>;
+  public currentFilters: ArtworksFilters;
 
-  filtersForm = new FormGroup({
+  private filters$: Observable<ArtworksFilters>;
+  private filtersSubscription$: Subscription;
+
+  public toggleSidenav$: Observable<boolean>;
+  public sidenavSubscription$: Subscription;
+
+  private isLoading$: Observable<boolean | null>;
+  private isLoadingSubscription$: Subscription;
+
+  private artworksMeta$: Observable<any>;
+  private artworksMetaSubscription$: Subscription;
+
+  public showLoader: boolean;
+  public pagination: any;
+  public isSidenavOpen = true;
+
+  public totalRecords: number;
+  public currentPage: number;
+  public pagesNumber: number;
+
+  public filtersForm = new FormGroup({
     search: new FormControl(),
     category: new FormControl(),
     sort: new FormControl(),
@@ -47,25 +69,6 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     status: new FormControl(),
     page: new FormControl(),
   });
-
-  artworksList$: Observable<any[]>;
-  isLoading$: Observable<boolean | null>;
-  errorMessage$: Observable<string | null>;
-
-  artworksMeta$: Observable<any>;
-  userEmail$: Observable<string>;
-
-  artworksMetaSubscription$: Subscription;
-  isLoadingSubscription$: Subscription;
-  userEmailSubscription$: Subscription;
-
-  showLoader: boolean;
-  pagination: any;
-
-  private filters$: Observable<ArtworksFilters>;
-  private filtersSubscription$: Subscription;
-
-  public currentFilters: ArtworksFilters;
 
   constructor(
     private store: Store<AppState>,
@@ -76,9 +79,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.artworksList$ = this.store.select(selectArtworksListData);
     this.artworksMeta$ = this.store.select(selectArtworksListMeta);
     this.isLoading$ = this.store.select(selectIsArtworksListLoading);
-    this.errorMessage$ = this.store.select(selectArtworksListError);
-    this.userEmail$ = this.store.select(selectAuthEmail);
     this.filters$ = this.store.select(selectArtworksFilters);
+    this.toggleSidenav$ = this.store.select(selectSidenav);
   }
 
   ngOnInit(): void {
@@ -90,11 +92,18 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       this.overlayElement = this.document.querySelector('#overlay');
 
       this.store.dispatch(new ApplyFilters(initalFilters));
+
       this.filtersSubscription$ = this.filters$.subscribe((newFilters: ArtworksFilters) => {
         if (newFilters !== undefined) {
           this.currentFilters = newFilters;
           this.store.dispatch(new LoadingArtworksStart({}));
           this.store.dispatch(new FetchArtworks(newFilters));
+        }
+      });
+
+      this.sidenavSubscription$ = this.toggleSidenav$.subscribe((isOpen: boolean) => {
+        if (isOpen !== undefined) {
+          this.isSidenavOpen = isOpen;
         }
       });
       this.artworksMetaSubscription$ = this.artworksMeta$.subscribe((meta: any) => {
@@ -131,6 +140,17 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new ApplyFilters(newFilters));
     this.scrollTo('#top');
+  }
+
+  public toggleSidenavStatus(): void {
+
+    console.log('SIDENAV ?', this.isSidenavOpen);
+
+    if (!this.isSidenavOpen) {
+      this.store.dispatch(new OpenSidenav({}));
+    } else {
+      this.store.dispatch(new CloseSidenav({}));
+    }
   }
 
   private scrollTo(target: string): void {

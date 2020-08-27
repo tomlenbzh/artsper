@@ -37,14 +37,14 @@
 
             <br>
 
-            <div class="submit-container txt-c">
+            <div class="submit-container txt-c mb-30">
               <button mat-raised-button type="submit" class="login-btn" *ngIf="!isLoading" [disabled]="!loginForm.valid"
                 (click)="login()">
                 Login
               </button>
 
-              <div class="loader-container" *ngIf="isLoading === true">
-                <mat-spinner color="warn" diameter="50"></mat-spinner>
+              <div class="loader-container animate__animated animate__fadeIn" *ngIf="isLoading === true">
+                <mat-spinner color="warn" diameter="50" class="login-spinner"></mat-spinner>
               </div>
             </div>
 

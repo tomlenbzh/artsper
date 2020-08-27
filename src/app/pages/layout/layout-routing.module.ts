@@ -9,11 +9,19 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: 'home',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'catalogue',
         loadChildren: () => import('./catalogue/catalogue.module').then(m => m.CatalogueModule),
         canActivate: [AuthenticationGuard]
+      }, {
+        path: 'artwork-details',
+        loadChildren: () => import('./artwork-details/artwork-details.module').then(m => m.ArtworkDetailsModule),
+        canActivate: [AuthenticationGuard]
       },
-      { path: '', redirectTo: 'catalogue', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
     ]
   }
 ];

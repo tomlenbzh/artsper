@@ -50,7 +50,6 @@ form > * {
   color: #39505c !important;
 }
 
-// mat-label error style
-::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
-  color: red !important;
+::ng-deep .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+  color: #39505c !important;
 }

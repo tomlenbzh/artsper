@@ -28,7 +28,7 @@
 .sidenav-overlay {
   position: fixed;
   top: 0;
-  right: 0;
+  right: 15px;
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.2);
@@ -53,6 +53,15 @@
 :host ::ng-deep .mat-progress-spinner circle,
 .mat-spinner circle {
   stroke: #39505c !important;
+}
+
+.sub-header {
+  display: flex;
+  align-items: baseline;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+  padding: 20px 0 15px;
 }
 
 @media screen and (max-width: 1199px) {

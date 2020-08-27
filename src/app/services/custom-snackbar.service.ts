@@ -11,7 +11,12 @@ export class CustomSnackbarService {
   ) { }
 
   public open(message: string, action: string | null, duration: number, panelClass: string | string[]) {
-    const config: MatSnackBarConfig = { panelClass, duration };
+    const config: MatSnackBarConfig = {
+      panelClass,
+      duration,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+    };
     this.snackBar.open(message, action, config);
   }
 }

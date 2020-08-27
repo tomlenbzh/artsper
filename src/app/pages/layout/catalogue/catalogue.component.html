@@ -9,8 +9,16 @@
       </div>
     </div>
 
-    <section class="mt-20 txt-r" *ngIf="pagination">
-      <app-items-found [itemsFound]="pagination?.total_items"></app-items-found>
+    <section class="mt-20 txt-r" *ngIf="pagination" class="sub-header">
+      <div class="showFilters">
+        <button mat-raised-button (click)="toggleSidenavStatus();">
+          <mat-icon [@rotateFilterIcon]=isSidenavOpen>keyboard_arrow_right</mat-icon>
+          {{ !isSidenavOpen ? 'Show filters' : 'Hide Filters' }}
+        </button>
+      </div>
+      <div class="items-count">
+        <app-items-found [itemsFound]="pagination?.total_items"></app-items-found>
+      </div>
     </section>
 
     <section *ngIf="pagination" class="mb-50">

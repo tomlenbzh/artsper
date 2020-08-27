@@ -6,8 +6,8 @@ import { OpenSidenav, CloseSidenav } from '../../store/actions/sidenav.actions';
 import { Observable, Subscription } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LogBackIn } from 'src/app/store/actions/auth.actions';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { PlatformService } from '../../services/platform.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -17,19 +17,34 @@ import { PlatformService } from '../../services/platform.service';
 export class LayoutComponent implements OnInit, OnDestroy {
 
   public toggleSidenav$: Observable<boolean>;
-  public isAuthenticated$: Observable<boolean>;
   public sidenavSubscription$: Subscription;
+
+  public isAuthenticated$: Observable<boolean>;
   public isAuthenticatedSubscription$: Subscription;
+
   public mode = 'side';
-  public isOpen = true;
+  public isOpen = false;
+  private noSidebar: boolean;
 
   constructor(
     private store: Store<AppState>,
     private authService: AuthenticationService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private router: Router
   ) {
     this.toggleSidenav$ = this.store.select(selectSidenav);
     this.isAuthenticated$ = this.store.select(selectAuthIsAuthenticated);
+    this.router.events.subscribe((val: any) => {
+      if (val.url !== `/catalogue` && val.url !== `/artworks-details`) {
+        this.noSidebar = true;
+        this.isOpen = false;
+        this.store.dispatch(new CloseSidenav({}));
+      } else {
+        this.noSidebar = false;
+        this.isOpen = true;
+        this.store.dispatch(new OpenSidenav({}));
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -41,7 +56,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       });
 
       this.sidenavSubscription$ = this.toggleSidenav$.subscribe((isOpen: boolean) => {
-        if (isOpen !== undefined) {
+        if (isOpen !== undefined && !this.noSidebar) {
           this.isOpen = isOpen;
         }
       });
@@ -50,15 +65,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
       mql.addEventListener('change', (e: any) => {
         if (e.matches) {
-          if (this.mode === 'side') {
+          if (this.mode === 'side' && !this.noSidebar) {
             this.mode = 'over';
             this.store.dispatch(new CloseSidenav({}));
           }
         } else {
-          if (this.mode === 'over') {
+          if (this.mode === 'over' && !this.noSidebar) {
             this.mode = 'side';
             this.store.dispatch(new OpenSidenav({}));
-          } else if (this.mode === 'side') {
+          } else if (this.mode === 'side' && !this.noSidebar) {
             this.mode = 'over';
             this.store.dispatch(new OpenSidenav({}));
           }
@@ -67,16 +82,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  public toggleSidenavStatus(): void {
-    if (this.isOpen === true) {
-      this.store.dispatch(new CloseSidenav({}));
-    } else if (this.isOpen === false) {
-      this.store.dispatch(new OpenSidenav({}));
-    }
-  }
-
   onClose(): void {
-    this.store.dispatch(new CloseSidenav({}));
+    if (!this.noSidebar) {
+      this.store.dispatch(new CloseSidenav({}));
+    }
   }
 
   ngOnDestroy(): void {
