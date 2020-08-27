@@ -1,0 +1,89 @@
+.artwork-header {
+  background: linear-gradient(133deg, rgba(96, 125, 139, 1) 0%, rgba(57, 80, 92, 1) 42%, rgba(25, 39, 46, 1) 100%);
+  padding-bottom: 30px;
+}
+
+.artwork-header-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.artwork-title-container {
+  width: 80%;
+}
+
+.artwork-title {
+  font-size: 45px;
+  margin: 0;
+  color: white;
+}
+
+.artwork-creation {
+  margin: 0;
+  padding-top: 20px;
+  font-size: 15px;
+  color: #c2dcea;
+}
+
+.artwork-img-container {
+  width: 20%;
+  position: relative;
+}
+
+.artwork-img {
+  width: 100%;
+  box-shadow: 0px 1px 15px 0px #192329;
+}
+
+.artwork-item {
+  display: flex;
+  flex-direction: row;
+  font-size: 25px;
+}
+.artwork-label {
+  width: 200px;
+  font-size: 20px;
+  color: #324752;
+}
+
+.artwork-value {
+}
+
+.limited-edition {
+  font-size: 35px;
+  color: #324752;
+  text-transform: uppercase;
+}
+
+.section-title {
+  text-decoration: underline;
+  color: #324752;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.gallery-info {
+  margin-bottom: 200px;
+}
+
+.gallery-name {
+  font-size: 25px;
+}
+
+.gallery-img {
+  width: 100%;
+}
+
+.carousel-navigation {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.carousel-nav-btn {
+  margin: 5px;
+  background: linear-gradient(133deg, #607d8b 0%, #39505c 42%, #19272e 100%);
+  color: white;
+}

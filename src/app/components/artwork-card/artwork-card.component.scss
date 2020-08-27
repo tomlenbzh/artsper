@@ -1,11 +1,12 @@
 .artwork-card {
   height: 100%;
+  border-radius: 0;
 }
 
 .artwork-img {
   width: 100%;
   height: 100px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .artwork-txt {
@@ -15,20 +16,4 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.coupon {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 10px;
-  font-weight: bold;
-  font-size: large;
-  border: 2px solid #242121;
-  border-radius: 200px;
-  background: green;
-  color: white;
 }

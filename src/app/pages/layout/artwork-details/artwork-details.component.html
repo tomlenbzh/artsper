@@ -1,1 +1,80 @@
-<p>artwork-details works!</p>
+<div class="artwork-header pt-30">
+
+  <div class="container">
+
+    <div class="artwork-header-content animate__animated animate__fadeIn">
+      <div class="artwork-title-container">
+        <h1 class="artwork-title">{{ title }}</h1>
+        <h5 class="artwork-creation">Created on {{ dateCreated }}</h5>
+      </div>
+      <div class="artwork-img-container">
+        <div class="coupon" *ngIf="promotion">
+          <app-discount [promotion]="promotion"></app-discount>
+        </div>
+        <img [defaultImage]="imagesGallery[0]?.image" [lazyLoad]="imagesGallery[0]?.image" [errorImage]="errorImg"
+          class="artwork-img">
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container">
+
+  <div class="mt-30 pt-30">
+
+    <div *ngIf="limitedEdition" class="limited-edition mb-50">
+      Limited edition
+    </div>
+
+    <div class="artwork-info mb-50">
+
+      <h1 class="section-title" style="text-decoration: underline;">Artwork:</h1>
+
+      <div class="artwork-item mt-30">
+        <div class="artwork-label">Price:</div>
+        <div class="artwork-value">{{ price }}</div>
+      </div>
+
+      <div class="artwork-item mt-30">
+        <div class="artwork-label">Artist:</div>
+        <div class="artwork-value">{{ artist }}</div>
+      </div>
+
+      <div class="artwork-item mt-30">
+        <div class="artwork-label">Category:</div>
+        <div class="artwork-value">{{ category }}</div>
+      </div>
+
+      <div class="artwork-item mt-30 mb-30">
+        <div class="artwork-label">Dimensions:</div>
+        <div class="artwork-value">{{ dimensions }}</div>
+      </div>
+    </div>
+
+    <div class="image-carousel-container pt-30 pb-50">
+      <h1 class="section-title">More Pictures:</h1>
+      <ng-image-slider [images]="imagesGallery" #nav></ng-image-slider>
+      <div class="carousel-navigation">
+        <button mat-raised-button class="carousel-nav-btn" (click)="prevImageClick()">
+          <mat-icon>chevron_left</mat-icon>Prev
+        </button>
+        <button mat-raised-button class="carousel-nav-btn" (click)="nextImageClick()">
+          Next<mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="gallery-info">
+      <h1 class="section-title">Gallery:</h1>
+      <div class="gallery mt-30">
+        <div class="gallery-name mb-20">{{ galleryInfo?.gallery_name }}</div>
+        <img [defaultImage]="galleryInfo?.image?.absolute_path" [lazyLoad]="galleryInfo?.image?.absolute_path"
+          [errorImage]="galleryInfo?.image?.absolute_path" class="gallery-img">
+
+      </div>
+    </div>
+
+  </div>
+</div>

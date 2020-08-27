@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { ArtworkDetailsService } from '../../services/artwork-details.service';
 
 @Component({
   selector: 'app-artwork-card',
@@ -17,7 +19,10 @@ export class ArtworkCardComponent implements OnInit {
   public price: string;
   public promotion: string;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private artworkDetailsService: ArtworkDetailsService
+  ) { }
 
   ngOnInit(): void {
     this.initArtwork();
@@ -27,32 +32,17 @@ export class ArtworkCardComponent implements OnInit {
     this.artworkImg = this.artwork?.images[0]?.absolute_path;
     this.errorImg = `https://cdn2.iconfinder.com/data/icons/outlined-set-1/29/no_camera-512.png`;
     this.title = this.artwork?.artwork_title || '???';
-    this.artist = this.getArtistName();
+    this.artist = this.artworkDetailsService.getArtistName(this.artwork);
     this.category = this.artwork?.category?.label.en || '???';
-    this.dimensions = this.getDimensions();
-    this.price = this.getPrice();
+    this.dimensions = this.artworkDetailsService.getDimensions(this.artwork);
+    this.price = this.artworkDetailsService.getPrice(this.artwork);
     this.promotion = `-${this.artwork?.promotion?.percentage * 100}%`;
   }
 
-  private getArtistName(): string {
-    if (!this.artwork?.artist?.artist_firstname && !this.artwork?.artist?.artist_lastname) {
-      return '???';
-    } else if (!this.artwork?.artist?.artist_firstname) {
-      return this.artwork?.artist?.artist_lastname;
-    } else if (!this.artwork?.artist?.artist_lastname) {
-      return this.artwork?.artist?.artist_firstname;
-    } else {
-      return `${this.artwork?.artist?.artist_firstname} ${this.artwork?.artist?.artist_lastname}`;
-    }
-  }
 
-  private getDimensions(): string {
-    return !this.artwork?.artwork_dimension_h ? '???'
-      : `${this.artwork?.artwork_dimension_h} x ${this.artwork?.artwork_dimension_l} x ${this.artwork?.artwork_dimension_w}`;
-  }
 
-  private getPrice(): string {
-    return !this.artwork?.artwork_price ? '???'
-      : `${this.artwork?.artwork_price} ${this.artwork?.currency?.sign}`;
+  public artworkDetails(artwork: any) {
+    this.artworkDetailsService.setArtworkDetails(artwork);
+    this.router.navigateByUrl('/artwork-details');
   }
 }

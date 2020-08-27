@@ -1,7 +1,7 @@
 <mat-card class="artwork-card animate__animated animate__fadeIn">
 
   <div class="coupon" *ngIf="artwork?.promotion">
-    {{ promotion }}
+    <app-discount [promotion]="promotion"></app-discount>
   </div>
 
   <img [defaultImage]="artworkImg" [lazyLoad]="artworkImg" [errorImage]="errorImg" class="artwork-img">
@@ -12,7 +12,7 @@
     <p class="artwork-txt">Dimensions: {{ dimensions }}</p>
     <p class="artwork-txt">Price: {{ price }}</p>
     <div class="actions">
-      <button mat-icon-button matTooltip="More information" [routerLink]="['/artwork-details']">
+      <button mat-icon-button matTooltip="More information" (click)="artworkDetails(artwork)">
         <mat-icon>more_horiz</mat-icon>
       </button>
     </div>

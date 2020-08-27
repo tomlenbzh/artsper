@@ -64,6 +64,11 @@
   padding: 20px 0 15px;
 }
 
+.filters-btn {
+  background: linear-gradient(133deg, #607d8b 0%, #39505c 42%, #19272e 100%);
+  color: white;
+}
+
 @media screen and (max-width: 1199px) {
   .artwork {
     width: 33.33%;

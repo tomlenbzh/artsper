@@ -11,7 +11,7 @@
 
     <section class="mt-20 txt-r" *ngIf="pagination" class="sub-header">
       <div class="showFilters">
-        <button mat-raised-button (click)="toggleSidenavStatus();">
+        <button mat-raised-button (click)="toggleSidenavStatus();" class="filters-btn">
           <mat-icon [@rotateFilterIcon]=isSidenavOpen>keyboard_arrow_right</mat-icon>
           {{ !isSidenavOpen ? 'Show filters' : 'Hide Filters' }}
         </button>
