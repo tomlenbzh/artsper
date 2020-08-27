@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { User, AuthCredentials } from '../models/auth.model';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,19 @@ export class AuthenticationService {
 
   private BASE_URL = 'https://www.artsper.com/api/auth-v2';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private platformService: PlatformService,
+  ) { }
 
   /**
    * getToken()
    * Retrieves token from localstorage
    */
   public getAccessToken(): string {
-    return localStorage.getItem('userProfile');
+    if (this.platformService.isPlatformBrowser()) {
+      return localStorage.getItem('userProfile');
+    }
   }
 
   /**
