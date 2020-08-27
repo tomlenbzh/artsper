@@ -23,7 +23,6 @@ export class CatalogueService {
       + `${this.setSortFilter(filters.sort)}`
       + `${this.setPriceFilter(filters.price)}`
       + `${this.setStatusFilters(filters.status)}`;
-    console.log('baseUrl', baseUrl);
 
     return baseUrl;
   }

@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError, tap, mapTo } from 'rxjs/operators';
+import { map, switchMap, catchError, mapTo } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
-
-import { Store } from '@ngrx/store';
-import { AppState } from '../store';
 
 import { CatalogueService } from '../../services/catalogue.service';
 import {
@@ -23,9 +19,7 @@ export class CatalogEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store<AppState>,
     private catalogueService: CatalogueService,
-    private router: Router,
     private snack: CustomSnackbarService,
   ) { }
 
@@ -59,7 +53,7 @@ export class CatalogEffects {
   @Effect()
   FetchArtworksSuccess: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_SUCCESS),
-    tap((artworksList) => console.log('[FETCH ARTWORKS SUCCESS]', artworksList)),
+    // tap((artworksList) => console.log('[FETCH ARTWORKS SUCCESS]', artworksList)),
     mapTo(new LoadingArtworksEnd({}))
   );
 
@@ -70,7 +64,7 @@ export class CatalogEffects {
   @Effect()
   FetchArtworksFailure: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.FETCH_ARTWORKS_FAILURE),
-    tap((error) => console.log('[FETCH ARTWORKS ERROR]', error)),
+    // tap((error) => console.log('[FETCH ARTWORKS ERROR]', error)),
     mapTo(new LoadingArtworksEnd({})),
   );
 
@@ -80,9 +74,7 @@ export class CatalogEffects {
   @Effect({ dispatch: false })
   LoadingArtworksStart: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.LOADING_ARTWORKS_START),
-    tap((error) => {
-      console.log('[LOADING START]', error);
-    })
+    // tap((error) => console.log('[LOADING START]', error))
   );
 
   /**
@@ -91,9 +83,7 @@ export class CatalogEffects {
   @Effect({ dispatch: false })
   LoadingArtworksEnd: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.LOADING_ARTWORKS_END),
-    tap((error) => {
-      console.log('[LOADING END]', error);
-    })
+    // tap((error) => console.log('[LOADING END]', error))
   );
 
   /**
@@ -102,8 +92,6 @@ export class CatalogEffects {
   @Effect({ dispatch: false })
   ApplyFilters: Observable<any> = this.actions$.pipe(
     ofType(CatalogActionTypes.APPLY_FILTERS),
-    tap((payload) => {
-      console.log('[APPLY FILTERS]', payload);
-    })
+    // tap((payload) => console.log('[APPLY FILTERS]', payload))
   );
 }

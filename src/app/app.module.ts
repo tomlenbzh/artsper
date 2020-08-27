@@ -22,6 +22,7 @@ import { CatalogEffects } from './store/effects/catalog.effects';
 
 import { TokenInterceptor } from './tools/interceptors/token.interceptor';
 import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
+import { SidenavEffects } from './store/effects/sidenav.effects';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { ErrorInterceptor } from './tools/interceptors/error.interceptor';
     ScrollToModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AuthEffects, CatalogEffects]),
+    EffectsModule.forRoot([AuthEffects, CatalogEffects, SidenavEffects]),
     HttpClientModule,
   ],
   providers: [{

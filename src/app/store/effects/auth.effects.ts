@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { CustomSnackbarService } from '../../services/custom-snackbar.service';
 
 import { AuthCredentials } from '../../models/auth.model';
-import { LogIn, AuthActionTypes, LogInSuccess, LogInFailure, LoadingAuthEnd, LoadingAuthStart } from '../actions/auth.actions';
+import { LogIn, AuthActionTypes, LogInSuccess, LogInFailure, LoadingAuthEnd } from '../actions/auth.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -55,7 +55,7 @@ export class AuthEffects {
   LogInSuccess: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOGIN_SUCCESS),
     tap((user) => {
-      console.log('[LOGIN SUCCESS]', user.payload);
+      // console.log('[LOGIN SUCCESS]', user.payload);
       localStorage.setItem('userProfile', JSON.stringify(user.payload));
       setTimeout(() => {
         this.snack.open(`Welcome ${user.payload.email}!`, null, 2000, 'login-success-snackbar');
@@ -78,7 +78,7 @@ export class AuthEffects {
   LogInFailure: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOGIN_FAILURE),
     tap((payload) => {
-      console.log('[LOGIN ERROR]', payload);
+      // console.log('[LOGIN ERROR]', payload);
       setTimeout(() => {
         this.store.dispatch(new LoadingAuthEnd({}));
         this.snack.open(`Invalid email and/or password`, 'OK', null, 'login-failure-snackbar');
@@ -96,7 +96,7 @@ export class AuthEffects {
     .pipe(
       ofType(AuthActionTypes.LOGOUT),
       tap(() => {
-        console.log('[LOGOUT]');
+        // console.log('[LOGOUT]');
         localStorage.removeItem('userProfile');
         this.router.navigateByUrl('/login');
         setTimeout(() => {
@@ -114,7 +114,7 @@ export class AuthEffects {
   LoadingAuthStart: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOADING_AUTH_START),
     tap(() => {
-      console.log('[LOADING AUTH START]');
+      // console.log('[LOADING AUTH START]');
     })
   );
 
@@ -127,7 +127,7 @@ export class AuthEffects {
   LoadingAuthEnd: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOADING_AUTH_END),
     tap(() => {
-      console.log('[LOADING AUTH END]');
+      // console.log('[LOADING AUTH END]');
     })
   );
 
@@ -139,7 +139,7 @@ export class AuthEffects {
   LogBackIn: Observable<any> = this.actions$.pipe(
     ofType(AuthActionTypes.LOG_BACK_IN),
     tap((payload) => {
-      console.log('[LOG BACK IN]', payload);
+      // console.log('[LOG BACK IN]', payload);
     })
   );
 }

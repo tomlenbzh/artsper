@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-// import { AuthCredentials } from '../../models/auth.model';
 
 export enum SidenavActionTypes {
   OPEN_SIDENAV = '[SIDENAV] Open',
@@ -21,3 +20,7 @@ export class CloseSidenav implements Action {
   readonly type = SidenavActionTypes.CLOSE_SIDENAV;
   constructor(readonly payload: any) { }
 }
+
+export type Actions =
+  OpenSidenav |
+  CloseSidenav;

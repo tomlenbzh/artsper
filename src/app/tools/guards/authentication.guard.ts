@@ -20,7 +20,6 @@ export class AuthenticationGuard implements CanActivate {
         return true;
       }
     } else {
-      console.log('state', state);
       if (!this.authService.getAccessToken()) {
         this.router.navigateByUrl('/login');
         return false;

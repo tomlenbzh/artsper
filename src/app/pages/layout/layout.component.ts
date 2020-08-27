@@ -24,7 +24,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   public mode = 'side';
   public isOpen = false;
-  private noSidebar: boolean;
+  private noSidebar = true;
 
   constructor(
     private store: Store<AppState>,
@@ -35,14 +35,28 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.toggleSidenav$ = this.store.select(selectSidenav);
     this.isAuthenticated$ = this.store.select(selectAuthIsAuthenticated);
     this.router.events.subscribe((val: any) => {
-      if (val.url !== `/catalogue` && val.url !== `/artworks-details`) {
-        this.noSidebar = true;
-        this.isOpen = false;
-        this.store.dispatch(new CloseSidenav({}));
+      if (val.url !== `/catalogue` && val.url !== undefined) {
+        if (this.noSidebar === true && this.isOpen === true) {
+          this.isOpen = false;
+          this.store.dispatch(new CloseSidenav({}));
+        } else if (this.noSidebar === true && this.isOpen === false) {
+          this.isOpen = false;
+        } else {
+          this.noSidebar = true;
+        }
       } else {
-        this.noSidebar = false;
-        this.isOpen = true;
-        this.store.dispatch(new OpenSidenav({}));
+        if (val.url !== undefined) {
+          if (this.noSidebar === false && this.isOpen === true) {
+            this.isOpen = true;
+          } else if (this.noSidebar === false && this.isOpen === false) {
+            this.isOpen = true;
+            this.store.dispatch(new OpenSidenav({}));
+          } else {
+            this.noSidebar = false;
+            this.isOpen = true;
+            this.store.dispatch(new OpenSidenav({}));
+          }
+        }
       }
     });
   }
