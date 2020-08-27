@@ -15,7 +15,7 @@ import { AuthCredentials } from '../../models/auth.model';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  loginForm = new FormGroup({
+  public loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });

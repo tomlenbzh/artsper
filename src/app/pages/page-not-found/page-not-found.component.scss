@@ -1,0 +1,61 @@
+.pnf-full-height-container {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  -o-object-fit: cover;
+  -moz-object-fit: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.bg-content {
+  display: table;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+}
+
+.bg-content-middle {
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pnf-card {
+  margin: 100px auto;
+  width: 350px;
+  height: 50%;
+}
+
+.pnf-404 {
+  font-size: 120px;
+  margin-bottom: 50px !important;
+  line-height: 1;
+}
+
+.pnf-subtitle {
+  font-size: 50px;
+  margin-bottom: 50px !important;
+  line-height: 1;
+}
+
+.pnf-container {
+  padding: 50px 20px;
+  border-radius: 5px;
+  background: #141d22d1;
+}
+
+@media screen and (max-width: 400px) {
+  .login-card {
+    width: 90%;
+  }
+}

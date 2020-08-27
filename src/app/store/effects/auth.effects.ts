@@ -98,6 +98,7 @@ export class AuthEffects {
       tap(() => {
         // console.log('[LOGOUT]');
         localStorage.removeItem('userProfile');
+        localStorage.removeItem('artwork');
         this.router.navigateByUrl('/login');
         setTimeout(() => {
           this.snack.open('GOOD BY!', null, 2000, 'logout-snackbar');
